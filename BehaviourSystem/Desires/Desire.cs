@@ -4,6 +4,7 @@ using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
+using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 namespace UGOAP.BehaviourSystem.Desires;
 
@@ -13,7 +14,7 @@ public abstract partial class Desire : Node
     public FastName DesireName { get; private set; }
     public List<Goal> Goals { get; private set; } = new List<Goal>();
     protected  HashSet<Belief> triggers = new HashSet<Belief>();
-    private IAgent _agent;
+    protected IAgent _agent;
 
     public override void _Ready()
     {
@@ -40,8 +41,9 @@ public abstract partial class Desire : Node
         }
     }
 
-    public float ComputeSatisfaction()
+    public float ComputeSatisfaction(IState state = null)
     {
+        IState stateToUse = state ?? _agent.State;
         if (Goals.Count == 0)
         {
             return 1.0f;
@@ -51,7 +53,7 @@ public abstract partial class Desire : Node
         var weightSum = 0.0f;
         foreach (var goal in Goals)
         {
-            var satisfaction = goal.GetSatisfaction(_agent.State);
+            var satisfaction = goal.GetSatisfaction(stateToUse);
             valueSum += satisfaction * goal.Priority;
             weightSum += goal.Priority;
         }

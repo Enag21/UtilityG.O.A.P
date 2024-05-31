@@ -35,6 +35,11 @@ public partial class DecisionMakerComponent : Node, IDecisionMaker
     {
         foreach (var plan in plans)
         {
+            if (plan.State is not null)
+            {
+                _simulatedStates.Add(plan, plan.State);
+                continue;
+            }
             var planSimulator = new PlanSimulator(_state, plan);
             _simulatedStates.Add(plan, planSimulator.Simulate());
         }

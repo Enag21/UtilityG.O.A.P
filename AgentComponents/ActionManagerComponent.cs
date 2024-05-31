@@ -70,7 +70,7 @@ public partial class ActionManagerComponent : Node, IActionManager
 
         var movementAction = new BasicAction.Builder(new FastName($"Move to {smartObject.Id}"), _agent.State, smartObject)
             .WithActionLogic(new MoveActionLogic(_agent.NavigationComponent, smartObject.Location))
-            .WithEffect(new FastName($"At {smartObject.Id}"))
+            .WithStateEffect(new Belief.BeliefBuilder(new FastName($"At {smartObject.Id}")).WithCondition(() => true).Build())
             .Build();
         AddChild(movementAction as Node);
 

@@ -17,8 +17,8 @@ public class ChopTreeActionBuilder : IActionBuilder
     {
         var action = new BasicAction.Builder(new FastName("ChopTree"), agent.State, _smartObject)
             .WithActionLogic(new ChopTreeActionLogic(_smartObject))
-            .WithEffect(Facts.Effects.HasWood)
-            .WithPrecondition(new FastName($"At {_smartObject.Id}"))
+            .WithStateEffect(new Belief.BeliefBuilder(Facts.Effects.HasWood).WithCondition(() => true).Build())
+            .WithStatePrecondition(new Belief.BeliefBuilder(new FastName($"At {_smartObject.Id}")).WithCondition(() => true).Build())
             .Build();
         return action;
     }

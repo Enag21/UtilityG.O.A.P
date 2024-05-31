@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using UGOAP.Agent;
 using UGOAP.AgentComponents.Interfaces;
 using UGOAP.BehaviourSystem.DecisionMakers;
 using UGOAP.BehaviourSystem.Planners;
@@ -24,9 +25,11 @@ public partial class BehaviourComponent : Node
 
     private PlannerComponent _plannerComponent;
     private bool _behaviourRunning = false;
+    private IAgent _agent;
 
     public override void _Ready()
     {
+        _agent = GetOwner<IAgent>();
         PlanExecutionComponent.PlanFinished += () => _behaviourRunning = false;
         _plannerComponent = new PlannerComponent(new AStarPlanner(new BeliefsHeuristic()));
     }
@@ -45,7 +48,7 @@ public partial class BehaviourComponent : Node
     private void SelectANewPlan()
     {
         var plans = new HashSet<Plan>();
-        GoalDriver.ActiveGoals.ForEach(goal => plans.Add(_plannerComponent.Plan(ActionManagerComponent.AvailableActions, goal)));
+        GoalDriver.ActiveGoals.ForEach(goal => plans.Add(_plannerComponent.Plan(ActionManagerComponent.AvailableActions, goal, _agent.State)));
         var plan = DecisionMakerComponent.Decide(plans);
         PlanExecutionComponent.LoadPlan(plan);
 

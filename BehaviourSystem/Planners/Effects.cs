@@ -9,38 +9,20 @@ namespace UGOAP.BehaviourSystem.Planners;
 
 public class Effects
 {
-    public HashSet<FastName> SimpleEffects { get; } = new();
     public HashSet<Belief> StateEffects { get; } = new();
 
-    public int Count => SimpleEffects.Count + StateEffects.Count;
+    public int Count => StateEffects.Count;
 
     public Effects() { }
 
     public Effects(Effects other)
     {
-        SimpleEffects = new HashSet<FastName>(other.SimpleEffects);
         StateEffects = new HashSet<Belief>(other.StateEffects);
-    }
-
-    public void AddPreconditions(Preconditions preconditions)
-    {
-        SimpleEffects.UnionWith(preconditions.SimplePreconditions);
-        StateEffects.UnionWith(preconditions.StatePreconditions);
     }
 
     public void ExceptWithFulfilledStateEffects()
     {
         StateEffects.RemoveWhere(effect => effect.Evaluate());
-    }
-
-    public void ExceptWithEffects(Effects effectsToRemove)
-    {
-        SimpleEffects.RemoveWhere(effect => effectsToRemove.SimpleEffects.Contains(effect));
-    }
-
-    public void Add(FastName efffect)
-    {
-        SimpleEffects.Add(efffect);
     }
 
     public void Add(Belief stateEffect)
@@ -53,19 +35,16 @@ public class Effects
         StateEffects.ForEach(effect => state.BeliefComponent.UpdateBelief(effect));
     }
 
-    public bool FulfillsAnyRequiredEffects(Effects requiredEffects)
+    public bool FulfillsAnyRequiredEffects(IState state)
     {
-        var simpleEffects = false;
-        foreach (var effect in requiredEffects.SimpleEffects)
+        var unfuldilledEffects = state.BeliefComponent.Beliefs.Where(b => !b.Value.Evaluate());
+        foreach (var (predicate, belief) in unfuldilledEffects)
         {
-            foreach (var simpleEffect in SimpleEffects)
+            if (StateEffects.Any(effect => effect.Predicate == predicate))
             {
-                if (effect == simpleEffect)
-                {
-                    return true;
-                }
+                return true;
             }
         }
-        return simpleEffects;
+        return false;
     }
 }

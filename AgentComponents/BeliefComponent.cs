@@ -12,7 +12,16 @@ public partial class BeliefComponent : Node, IBeliefComponent
 
     public void AddBelief(Belief belief) => Beliefs.Add(belief.Predicate, belief);
 
-    public void UpdateBelief(Belief belief) => Beliefs[belief.Predicate] = belief;
+    public void UpdateBelief(Belief belief)
+    {
+        // For debugging
+        var updatedResult = belief.Evaluate();
+        var currentResult = GetBelief(belief.Predicate).Evaluate();
+
+        Beliefs[belief.Predicate] = belief;
+
+        GD.Print($"Updated belief {belief.Predicate} from {currentResult} to {Beliefs[belief.Predicate].Evaluate()}");
+    }
 
     public void RemoveBelief(FastName predicate) => Beliefs.Remove(predicate);
 
@@ -30,5 +39,13 @@ public partial class BeliefComponent : Node, IBeliefComponent
             clonedBeliefs.Add(predicate, belief.Copy());
         }
         return new BeliefComponent { Beliefs = clonedBeliefs };
+    }
+
+    public void PrintBeliefs()
+    {
+        foreach (var (predicate, belief) in Beliefs)
+        {
+            GD.Print($"{predicate} = {belief.Evaluate()}");
+        }
     }
 }

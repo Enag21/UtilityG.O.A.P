@@ -19,7 +19,7 @@ public partial class BaseAgent2D : CharacterBody2D, IAgent
     public Vector2 Location => GlobalPosition;
     public HashSet<IActionBuilder> SuppliedActionBuilders { get; private set; } = new();
     public INavigationComponent NavigationComponent => MoveComponent;
-    public IState State { get; private set; } = new State(new BeliefComponent(), new TraitManager(), new ParameterManager());
+    public IState State { get; private set; } = new State();
 
     public override void _Ready()
     {

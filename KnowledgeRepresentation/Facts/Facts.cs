@@ -17,7 +17,8 @@ public static class Facts
 
     public class Predicates
     {
-        public static FastName FireIsUnlit => AllNames.FireIsUnlit;
+        public static FastName FireIsLit => AllNames.FireIslit;
+        public static FastName FireIsNotLit => AllNames.FireIsNotLit;
     }
 
     public class Goals
@@ -28,7 +29,8 @@ public static class Facts
     private class AllNames
     {
         public static readonly FastName HasWood = new FastName("HasWood");
-        public static readonly FastName FireIsUnlit = new FastName("FireIsUnlit");
+        public static readonly FastName FireIslit = new FastName("FireIslit");
+        public static readonly FastName FireIsNotLit = new FastName("FireIsNotLit");
         public static readonly FastName LitFire = new FastName("LitFire");
         public static readonly FastName FireLit = new FastName("FireLit");
     }

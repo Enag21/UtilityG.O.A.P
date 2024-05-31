@@ -13,4 +13,5 @@ public interface IBeliefComponent : ICopyable<IBeliefComponent>
     void UpdateBelief(Belief belief);
     void RemoveBelief(FastName predicate);
     Belief GetBelief(FastName predicate);
+    void PrintBeliefs();
 }

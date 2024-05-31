@@ -39,21 +39,9 @@ public partial class BasicAction : ActionBase
             return this;
         }
 
-        public Builder WithEffect(FastName effect)
-        {
-            _action.Effects.Add(effect);
-            return this;
-        }
-
         public Builder WithStateEffect(Belief stateEffect)
         {
             _action.Effects.Add(stateEffect);
-            return this;
-        }
-
-        public Builder WithPrecondition(FastName precondition)
-        {
-            _action.Preconditions.Add(precondition);
             return this;
         }
 

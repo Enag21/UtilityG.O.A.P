@@ -20,7 +20,13 @@ public partial class ActionExecutionComponent : Node, IPlanExecutioner
 
     public void LoadPlan(Plan plan)
     {
+        if (CurrentAction != null)
+        {
+            StopAction();
+        }
         _currentPlan = plan;
+
+        LoadAction();
     }
 
     private void LoadAction()
@@ -30,18 +36,25 @@ public partial class ActionExecutionComponent : Node, IPlanExecutioner
             return;
         }
         CurrentAction = _currentPlan.Actions.Dequeue();
+        CurrentAction.Start();
         CurrentAction.ActionFinished += OnActionFinished;
     }
 
     private void OnActionFinished()
     {
-        CurrentAction.ActionFinished -= OnActionFinished;
-        CurrentAction.Stop();
-        CurrentAction = null;
+        StopAction();
+        LoadAction();
 
         if (_currentPlan.Actions.Count != 0) return;
         GD.Print("Plan Finished");
         _currentPlan = null;
         PlanFinished?.Invoke();
+    }
+
+    private void StopAction()
+    {
+        CurrentAction.ActionFinished -= OnActionFinished;
+        CurrentAction.Stop();
+        CurrentAction = null;
     }
 }

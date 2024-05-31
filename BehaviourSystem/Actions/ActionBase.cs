@@ -18,7 +18,7 @@ public abstract partial class ActionBase : Node, IAction
     public float Cost => CostFunction();
     public List<IParameterModifier> ParameterModifiers { get; protected set; } = new List<IParameterModifier>();
     public Effects Effects { get; protected set; } = new Effects();
-    public Preconditions Preconditions { get; protected set; } = new( new HashSet<FastName>(), new HashSet<Belief>() );
+    public Preconditions Preconditions { get; protected set; } = new Preconditions();
     protected Func<float> CostFunction = () => 1.0f;
     protected IActionLogic ActionLogic;
     protected readonly IState State;

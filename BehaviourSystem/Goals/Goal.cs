@@ -49,7 +49,7 @@ public class Goal
             return this;
         }
 
-        public Builder WithDesiredEffect(FastName effect)
+        public Builder WithDesiredEffect(Belief effect)
         {
             _goal.DesiredEffects.Add(effect);
             return this;
