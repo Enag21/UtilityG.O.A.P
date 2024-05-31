@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://o5emc8isvqb8"]
+
+[ext_resource type="Script" path="res://TestScenarios/Scenes/SmartObjects/FirePit/FirePit.cs" id="1_vgjpf"]
+[ext_resource type="Texture2D" uid="uid://csh73rqpacqqe" path="res://TestScenarios/Art/Objects/taiga_ [resources].png" id="2_6vg7h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ugv6r"]
+atlas = ExtResource("2_6vg7h")
+region = Rect2(112, 126, 16, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqruu"]
+atlas = ExtResource("2_6vg7h")
+region = Rect2(128, 126, 16, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dd0e3"]
+atlas = ExtResource("2_6vg7h")
+region = Rect2(144, 126, 16, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_snfhy"]
+atlas = ExtResource("2_6vg7h")
+region = Rect2(160, 126, 16, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ifjjb"]
+atlas = ExtResource("2_6vg7h")
+region = Rect2(96, 126, 16, 14)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_divhq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugv6r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqruu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dd0e3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_snfhy")
+}],
+"loop": true,
+"name": &"Lit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ifjjb")
+}],
+"loop": true,
+"name": &"UnLit",
+"speed": 5.0
+}]
+
+[node name="FirePit" type="Node2D"]
+script = ExtResource("1_vgjpf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_divhq")
+animation = &"Lit"
+frame_progress = 0.527891
