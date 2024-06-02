@@ -78,6 +78,7 @@ public class AStarPlanner : IPlanner
         return new Plan(actions, totalCost, finalState);
     }
 
+    // TODO: Check that the current state is not modified
     public Plan ComputePlan(HashSet<IAction> actions, Goal goal, IState currentState)
     {
         var goalState =  new State(goal.DesiredEffects.StateEffects);

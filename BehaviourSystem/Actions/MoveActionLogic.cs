@@ -19,12 +19,6 @@ public class MoveActionLogic : IActionLogic
     }
 
     public void Start() => _navigationComponent.SetDestination(_destination);
-
-    public void Stop()
-    {
-    }
-
-    public void Update(float delta)
-    {
-    }
+    public void Stop() => _navigationComponent.SetDestination(Vector2.Zero);
+    public void Update(float delta) { }
 }

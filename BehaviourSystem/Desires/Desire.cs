@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Goals;
@@ -15,6 +16,7 @@ public abstract partial class Desire : Node
     public List<Goal> Goals { get; private set; } = new List<Goal>();
     protected  HashSet<Belief> triggers = new HashSet<Belief>();
     protected IAgent _agent;
+    private List<Goal> _markedForRemoval = new List<Goal>();
 
     public override void _Ready()
     {
@@ -26,6 +28,7 @@ public abstract partial class Desire : Node
     public void Update()
     {
         EvaluateTriggers();
+        RemoveSatisfiedGoals();
         Goals.ForEach(g => g.Update(_agent.State));
     }
 
@@ -35,8 +38,8 @@ public abstract partial class Desire : Node
         {
             if (!trigger.Evaluate()) continue;
             var goal = CreateGoal(trigger.Predicate);
-            if (Goals.Contains(goal)) continue;
-            goal.GoalSatisfied += () => { Goals.Remove(goal); };
+            if (Goals.Any(g => g.Name == goal.Name)) continue;
+            goal.GoalSatisfied += () => { _markedForRemoval.Add(goal); };
             Goals.Add(goal);
         }
     }
@@ -59,6 +62,16 @@ public abstract partial class Desire : Node
         }
 
         return valueSum / weightSum;
+    }
+
+    private void RemoveSatisfiedGoals()
+    {
+        if (_markedForRemoval.Count == 0) return;
+        foreach (var goal in _markedForRemoval)
+        {
+            Goals.Remove(goal);
+        }
+        _markedForRemoval.Clear();
     }
 
     protected abstract void OnReady();

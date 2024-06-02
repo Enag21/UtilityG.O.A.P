@@ -8,8 +8,6 @@ namespace UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 public class State : IState
 {
-    private HashSet<Belief> stateEffects;
-
     public IBeliefComponent BeliefComponent { get; private set; }
     public ITraitManager TraitManager { get; private set; }
     public IParameterManager ParameterManager { get; private set; }

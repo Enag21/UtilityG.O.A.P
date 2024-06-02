@@ -16,7 +16,7 @@ public partial class BeliefComponent : Node, IBeliefComponent
     {
         // For debugging
         var updatedResult = belief.Evaluate();
-        var currentResult = GetBelief(belief.Predicate).Evaluate();
+        var currentResult = GetBelief(belief.Predicate)?.Evaluate();
 
         Beliefs[belief.Predicate] = belief;
 

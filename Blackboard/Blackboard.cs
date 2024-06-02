@@ -21,8 +21,8 @@ public partial class Blackboard<T> : Singleton<Blackboard<T>>
 
     public void UnregisterObject(FastName id)
     {
-        Objects.Remove(id);
         ObjectDeregistered?.Invoke(Objects[id]);
+        Objects.Remove(id);
     }
 
     public TGeneric GetGenericObject<TGeneric>(FastName id)

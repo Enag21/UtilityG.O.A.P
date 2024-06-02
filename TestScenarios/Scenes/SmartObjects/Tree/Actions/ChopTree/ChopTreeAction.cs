@@ -8,12 +8,20 @@ namespace UGOAP.TestScenarion.Scenes.SmartObjects.Tree.Actions.ChopTree;
 public partial class ChopTreeActionLogic : Node, IActionLogic
 {
     public event Action LogicFinished;
-
     private TreeSmartObject _smartTree;
+    private bool _treeChopped = false;
     public ChopTreeActionLogic(ISmartObject smartObject) => _smartTree = (TreeSmartObject)smartObject;
-    public void Start()
+
+    public void Update(float delta)
     {
-        _smartTree.ChopTree();
-        LogicFinished?.Invoke();
+        if (!_treeChopped)
+        {
+            _treeChopped = true;
+            _smartTree.ChopTree();
+            LogicFinished?.Invoke();
+        }
     }
+
+    public void Start() { }
+    public void Stop() => _treeChopped = false;
 }

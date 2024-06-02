@@ -23,10 +23,11 @@ BehaviourComponent = NodePath("BehaviourComponent")
 position = Vector2(388, 121)
 
 [node name="Tree2" parent="SmartObjects" instance=ExtResource("3_o2edj")]
-position = Vector2(447, 167)
+position = Vector2(256, 203)
 
 [node name="Tree3" parent="SmartObjects" instance=ExtResource("3_o2edj")]
 position = Vector2(422, 239)
 
-[node name="FirePit" parent="SmartObjects" instance=ExtResource("4_m1rol")]
+[node name="FirePit" parent="SmartObjects" node_paths=PackedStringArray("SensableComponent") instance=ExtResource("4_m1rol")]
 position = Vector2(372, 190)
+SensableComponent = NodePath("SensableComponent")

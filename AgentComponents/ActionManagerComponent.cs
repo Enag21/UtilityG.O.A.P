@@ -65,15 +65,8 @@ public partial class ActionManagerComponent : Node, IActionManager
 
     private IAction CreateMovementAction(ISmartObject smartObject)
     {
-        var beliefFactory = new BeliefFactory(_agent);
-        _beliefComponent.AddBelief(beliefFactory.CreateLocationBelief(new FastName($"At {smartObject.Id}"), smartObject.Location, 1.0f));
-
-        var movementAction = new BasicAction.Builder(new FastName($"Move to {smartObject.Id}"), _agent.State, smartObject)
-            .WithActionLogic(new MoveActionLogic(_agent.NavigationComponent, smartObject.Location))
-            .WithStateEffect(new Belief.BeliefBuilder(new FastName($"At {smartObject.Id}")).WithCondition(() => true).Build())
-            .Build();
+        var movementAction = new MovementAction(new FastName($"Move to {smartObject.Id}"), _agent, smartObject);
         AddChild(movementAction as Node);
-
         return movementAction;
     }
 }

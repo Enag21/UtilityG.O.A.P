@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://1wdkeqos6dra"]
+[gd_scene load_steps=14 format=3 uid="uid://1wdkeqos6dra"]
 
 [ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_ml0to"]
 [ext_resource type="Script" path="res://AgentComponents/MoveComponent.cs" id="2_er2qj"]
@@ -9,12 +9,16 @@
 [ext_resource type="Script" path="res://BehaviourSystem/DecisionMakers/DecisionMakerComponent.cs" id="7_gx8er"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToLitTheFire.cs" id="7_o1xbp"]
 [ext_resource type="Texture2D" uid="uid://c2glk265rk24v" path="res://TestScenarios/Art/Characters/Basic Charakter Spritesheet.png" id="8_fdutg"]
+[ext_resource type="Script" path="res://AgentComponents/Sensors/SenseComponent.cs" id="10_om37l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hbo0f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3yifj"]
 atlas = ExtResource("8_fdutg")
 region = Rect2(13.7903, 9.18407, 21.8564, 29.3696)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g7nej"]
+radius = 68.0294
 
 [node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent")]
 script = ExtResource("1_ml0to")
@@ -54,3 +58,9 @@ DesireComponent = NodePath("../DesireComponent")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_3yifj")
+
+[node name="SenseComponent" type="Area2D" parent="."]
+script = ExtResource("10_om37l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SenseComponent"]
+shape = SubResource("CircleShape2D_g7nej")

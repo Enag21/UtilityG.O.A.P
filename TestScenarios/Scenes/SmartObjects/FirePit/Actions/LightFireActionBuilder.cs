@@ -18,7 +18,7 @@ public partial class LightFireActionBuilder : Node, IActionBuilder
     {
         var action = new BasicAction.Builder(new FastName("LightFire"), agent.State, _smartObject)
             .WithCost(() => agent.Location.DistanceTo(_smartObject.Location))
-            .WithActionLogic(new LightFireActionLogic(_smartObject))
+            .WithActionLogic(new LightFireActionLogic(_smartObject, agent))
             .WithStateEffect(new Belief.BeliefBuilder(Facts.Predicates.FireIsLit).WithCondition(() => true).Build())
             .WithStatePrecondition(new Belief.BeliefBuilder(new FastName($"At {_smartObject.Id}")).WithCondition(() => true).Build())
             .WithStatePrecondition(new Belief.BeliefBuilder(Facts.Preconditions.HasWood).WithCondition(() => true).Build())
