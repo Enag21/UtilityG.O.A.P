@@ -1,6 +1,4 @@
-using UGOAP.AgentComponents;
 using UGOAP.BehaviourSystem.Planners;
-using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 namespace UGOAP.BehaviourSystem.DecisionMakers;

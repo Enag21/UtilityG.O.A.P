@@ -1,11 +1,18 @@
-[gd_scene load_steps=5 format=4 uid="uid://d1pt4qdm72lrq"]
+[gd_scene load_steps=7 format=4 uid="uid://d1pt4qdm72lrq"]
 
+[ext_resource type="PackedScene" uid="uid://hxqcs7d0ykv4" path="res://TestScenarios/Art/VFX/Rain/Rain.tscn" id="1_3c8jw"]
 [ext_resource type="PackedScene" uid="uid://dn8gi1moa7qwr" path="res://TestScenarios/Tilemaps/Grass.tscn" id="1_6vktw"]
 [ext_resource type="PackedScene" uid="uid://1wdkeqos6dra" path="res://TestScenarios/Scenes/NPCs/BasicNPC/BasicNPC.tscn" id="2_5aqnw"]
 [ext_resource type="PackedScene" uid="uid://bcbl5p2rbf7of" path="res://TestScenarios/Scenes/SmartObjects/Tree/Tree.tscn" id="3_o2edj"]
 [ext_resource type="PackedScene" uid="uid://o5emc8isvqb8" path="res://TestScenarios/Scenes/SmartObjects/FirePit/FirePit.tscn" id="4_m1rol"]
+[ext_resource type="PackedScene" uid="uid://b38461qtxj7kf" path="res://TestScenarios/Scenes/SmartObjects/Chair/Chair.tscn" id="6_687iv"]
 
 [node name="Main" type="Node2D"]
+
+[node name="VFXLayer" type="CanvasLayer" parent="."]
+
+[node name="Rain" parent="VFXLayer" instance=ExtResource("1_3c8jw")]
+visible = false
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -23,10 +30,14 @@ BehaviourComponent = NodePath("BehaviourComponent")
 position = Vector2(388, 121)
 
 [node name="Tree2" parent="SmartObjects" instance=ExtResource("3_o2edj")]
-position = Vector2(447, 167)
+position = Vector2(256, 203)
 
 [node name="Tree3" parent="SmartObjects" instance=ExtResource("3_o2edj")]
 position = Vector2(422, 239)
 
-[node name="FirePit" parent="SmartObjects" instance=ExtResource("4_m1rol")]
+[node name="FirePit" parent="SmartObjects" node_paths=PackedStringArray("SensableComponent") instance=ExtResource("4_m1rol")]
 position = Vector2(372, 190)
+SensableComponent = NodePath("SensableComponent")
+
+[node name="Chair" parent="SmartObjects" instance=ExtResource("6_687iv")]
+position = Vector2(389, 178)

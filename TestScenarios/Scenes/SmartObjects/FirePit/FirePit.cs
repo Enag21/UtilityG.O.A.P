@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Godot;
 using UGOAP.BehaviourSystem.Actions;
 using UGOAP.CommonUtils.FastName;
+using UGOAP.KnowledgeRepresentation.BeliefSystem;
+using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.SmartObjects;
 
 namespace UGOAP;
@@ -10,6 +11,7 @@ namespace UGOAP;
 [GlobalClass]
 public partial class FirePit : Node2D, ISmartObject
 {
+    [Export] public SensableComponent SensableComponent { get; private set; }
     public FastName Id { get; private set; }
     public Vector2 Location => GlobalPosition;
     public HashSet<IActionBuilder> SuppliedActionBuilders { get; } = new();
@@ -26,10 +28,14 @@ public partial class FirePit : Node2D, ISmartObject
         _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _animatedSprite.Play("Lit");
 
-        timer = new Timer() { OneShot = true, WaitTime = 10.0f };
+        timer = new Timer() { OneShot = true, WaitTime = 5.0f };
         timer.Timeout += UnLitFire;
         AddChild(timer);
         timer.Start();
+
+        SensableComponent.AddBelief(new Belief.BeliefBuilder(Facts.Predicates.FireIsLit)
+            .WithCondition(() => IsLit)
+            .Build());
 
         SmartObjectBlackboard.Instance.RegisterObject(Id, this);
     }

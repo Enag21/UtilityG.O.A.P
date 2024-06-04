@@ -1,16 +1,14 @@
-﻿using System;
-using UGOAP.BehaviourSystem.Goals.SatisfactionConditions;
+﻿using UGOAP.BehaviourSystem.Goals.SatisfactionConditions;
+using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 namespace UGOAP;
 
 public class FireLitCondition : ISatisfactionCondition
 {
-    private readonly FirePit _firePit;
-    public FireLitCondition(FirePit firePit) => _firePit = firePit;
     public float GetSatisfaction(IState state)
     {
-        if (_firePit.IsLit)
+        if (state.BeliefComponent.GetBelief(Facts.Predicates.FireIsLit).Evaluate())
         {
             return 1.0f;
         }

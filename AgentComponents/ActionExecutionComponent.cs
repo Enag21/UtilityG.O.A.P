@@ -15,7 +15,24 @@ public partial class ActionExecutionComponent : Node, IPlanExecutioner
 
     public override void _Process(double delta)
     {
-        CurrentAction?.Update((float)delta);
+        if (_currentPlan == null)
+        {
+            return;
+        }
+
+        if (_currentPlan.Actions.Count == 0 && CurrentAction == null)
+        {
+            _currentPlan = null;
+            PlanFinished?.Invoke();
+            return;
+        }
+
+        if (CurrentAction == null)
+        {
+            LoadAction();
+        }
+
+        CurrentAction.Update((float)delta);
     }
 
     public void LoadPlan(Plan plan)
@@ -30,18 +47,28 @@ public partial class ActionExecutionComponent : Node, IPlanExecutioner
             return;
         }
         CurrentAction = _currentPlan.Actions.Dequeue();
+        GD.Print($"Action Loaded: {CurrentAction.ActionName.ToString()}");
         CurrentAction.ActionFinished += OnActionFinished;
+        CurrentAction.Start();
     }
 
     private void OnActionFinished()
     {
+        GD.Print($"Action Finished: {CurrentAction.ActionName.ToString()}");
+        StopAction();
+        LoadAction();
+    }
+
+    private void StopAction()
+    {
         CurrentAction.ActionFinished -= OnActionFinished;
         CurrentAction.Stop();
         CurrentAction = null;
+    }
 
-        if (_currentPlan.Actions.Count != 0) return;
-        GD.Print("Plan Finished");
+    public void StopCurrentPlan()
+    {
+        StopAction();
         _currentPlan = null;
-        PlanFinished?.Invoke();
     }
 }

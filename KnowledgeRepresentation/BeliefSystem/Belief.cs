@@ -26,6 +26,13 @@ public class Belief : ICopyable<Belief>
             .Build();
     }
 
+    internal Belief Invert()
+    {
+        var result = Evaluate();
+        _condition = () => !result;
+        return this;
+    }
+
     public class BeliefBuilder
     {
         readonly Belief _belief;

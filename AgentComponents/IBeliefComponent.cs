@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
@@ -13,4 +12,5 @@ public interface IBeliefComponent : ICopyable<IBeliefComponent>
     void UpdateBelief(Belief belief);
     void RemoveBelief(FastName predicate);
     Belief GetBelief(FastName predicate);
+    void PrintBeliefs();
 }

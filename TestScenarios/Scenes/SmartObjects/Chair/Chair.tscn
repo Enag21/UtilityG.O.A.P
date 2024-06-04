@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://b38461qtxj7kf"]
+
+[ext_resource type="Script" path="res://TestScenarios/Scenes/SmartObjects/Chair/Chair.cs" id="1_bu4h6"]
+[ext_resource type="Texture2D" uid="uid://dg0gxiahx0ltj" path="res://TestScenarios/Art/Tilesets/Building parts/Basic_Furniture.png" id="2_gkw23"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_juw5x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mjoel"]
+atlas = ExtResource("2_gkw23")
+region = Rect2(65.5833, 49.4832, 13.6142, 11.9257)
+
+[node name="Chair" type="Area2D" groups=["SmartObject"]]
+script = ExtResource("1_bu4h6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_juw5x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_mjoel")

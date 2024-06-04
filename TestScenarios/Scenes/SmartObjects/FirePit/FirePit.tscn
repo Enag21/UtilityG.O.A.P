@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://o5emc8isvqb8"]
+[gd_scene load_steps=11 format=3 uid="uid://o5emc8isvqb8"]
 
 [ext_resource type="Script" path="res://TestScenarios/Scenes/SmartObjects/FirePit/FirePit.cs" id="1_vgjpf"]
 [ext_resource type="Texture2D" uid="uid://csh73rqpacqqe" path="res://TestScenarios/Art/Objects/taiga_ [resources].png" id="2_6vg7h"]
+[ext_resource type="Script" path="res://AgentComponents/Sensors/SensableComponent.cs" id="3_dw56m"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ugv6r"]
 atlas = ExtResource("2_6vg7h")
@@ -51,10 +52,20 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="FirePit" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_tmdfp"]
+radius = 28.0713
+
+[node name="FirePit" type="Node2D" node_paths=PackedStringArray("SensableComponent") groups=["SmartObject"]]
 script = ExtResource("1_vgjpf")
+SensableComponent = NodePath("SensableComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_divhq")
 animation = &"Lit"
 frame_progress = 0.527891
+
+[node name="SensableComponent" type="Area2D" parent="."]
+script = ExtResource("3_dw56m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SensableComponent"]
+shape = SubResource("CircleShape2D_tmdfp")

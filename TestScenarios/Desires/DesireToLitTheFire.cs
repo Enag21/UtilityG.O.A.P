@@ -1,5 +1,4 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 using UGOAP.BehaviourSystem.Desires;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.CommonUtils.FastName;
@@ -17,9 +16,9 @@ public partial class DesireToLitTheFire : Desire
     protected override Goal CreateGoal(FastName triggerName)
     {
         var goal = new Goal.Builder(Facts.Goals.LitFire)
-            .WithSatisfactionCondition(new FireLitCondition(_firePit))
+            .WithSatisfactionCondition(new FireLitCondition())
             .WithPriority(10.0f)
-            .WithDesiredEffect(Facts.Effects.FireLit)
+            .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.FireIsLit).WithCondition(() => true).Build())
             .Build();
         return goal;
     }
@@ -34,7 +33,11 @@ public partial class DesireToLitTheFire : Desire
         if (@object is FirePit firePit)
         {
             _firePit = firePit;
-            triggers.Add(new Belief.BeliefBuilder(Facts.Predicates.FireIsUnlit)
+            var fireLitBelief = new Belief.BeliefBuilder(Facts.Predicates.FireIsLit)
+                .WithCondition(() => _firePit.IsLit == true)
+                .Build();
+            _agent.State.BeliefComponent.AddBelief(fireLitBelief);
+            triggers.Add(new Belief.BeliefBuilder(Facts.Predicates.FireIsNotLit)
                 .WithCondition(() => _firePit.IsLit == false)
                 .Build());
             SmartObjectBlackboard.Instance.ObjectRegistered -= OnSmartObjectRegistered;

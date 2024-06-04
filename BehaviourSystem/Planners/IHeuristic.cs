@@ -2,10 +2,10 @@
 
 public interface IHeuristic
 {
-    float Compute(PlanNode planNode);
+    float Compute(IPlanNode planNode);
 }
 
 public class BeliefsHeuristic : IHeuristic
 {
-    public float Compute(PlanNode node) => node.RequiredEffects.Count;
+    public float Compute(IPlanNode node) => node.GetUnfulfilledConditionsCount();
 }

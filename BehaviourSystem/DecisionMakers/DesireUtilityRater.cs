@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Godot;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 namespace UGOAP.BehaviourSystem.DecisionMakers;
@@ -11,11 +12,14 @@ public class DesireUtilityRater : IUtilityRater
 
     public float RateUtility(IState state)
     {
+        GD.Print("RateUtility");
+        GD.Print("Beliefs:");
+        state.BeliefComponent.PrintBeliefs();
         var valueSum = 0.0f;
         var weightSum = 0.0f;
         foreach (var desire in _desires)
         {
-            valueSum += desire.Weight * desire.ComputeSatisfaction();
+            valueSum += desire.Weight * desire.ComputeSatisfaction(state);
             weightSum += desire.Weight;
         }
         return valueSum / weightSum;
