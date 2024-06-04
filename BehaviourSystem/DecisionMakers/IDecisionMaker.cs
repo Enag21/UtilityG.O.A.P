@@ -6,4 +6,5 @@ namespace UGOAP.BehaviourSystem.DecisionMakers;
 public interface IDecisionMaker
 {
     Plan Decide(HashSet<Plan> plans);
+    void ReComputeUtilityForPlan(Plan currentPlan);
 }

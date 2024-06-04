@@ -1,9 +1,9 @@
 using System;
 using Godot;
+using UGOAP.Agent;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
-using UGOAP.KnowledgeRepresentation.StateRepresentation;
 using UGOAP.SmartObjects;
 
 namespace UGOAP.BehaviourSystem.Actions;
@@ -12,12 +12,8 @@ public partial class BasicAction : ActionBase
 {
     public override event Action ActionFinished;
 
-    private BasicAction(FastName actionName, IState state, ISmartObject provider)
+    private BasicAction(FastName actionName, IAgent state, ISmartObject provider)
         : base(actionName, state, provider) { }
-
-    public BasicAction()
-    {
-    }
 
     public override void _EnterTree()
     {
@@ -28,7 +24,7 @@ public partial class BasicAction : ActionBase
     {
         readonly BasicAction _action;
 
-        public Builder(FastName actionName, IState state, ISmartObject provider)
+        public Builder(FastName actionName, IAgent state, ISmartObject provider)
         {
             _action = new BasicAction(actionName, state, provider);
         }
@@ -62,9 +58,15 @@ public partial class BasicAction : ActionBase
             _action.ActionLogic = actionLogic;
             _action.ActionLogic.LogicFinished += () =>
             {
-                _action.ApplyEffects(_action.State);
+                _action.ApplyEffects(_action.agent.State);
                 _action.ActionFinished?.Invoke();
             };
+            return this;
+        }
+
+        public Builder WithInRangeRequired()
+        {
+            _action.RequiresInRange = true;
             return this;
         }
 

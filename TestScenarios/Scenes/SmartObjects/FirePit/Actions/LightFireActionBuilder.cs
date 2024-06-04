@@ -1,5 +1,4 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Actions;
 using UGOAP.CommonUtils.FastName;
@@ -16,11 +15,11 @@ public partial class LightFireActionBuilder : Node, IActionBuilder
 
     public IAction Build(IAgent agent)
     {
-        var action = new BasicAction.Builder(new FastName("LightFire"), agent.State, _smartObject)
+        var action = new BasicAction.Builder(new FastName("LightFire"), agent, _smartObject)
+            .WithInRangeRequired()
             .WithCost(() => agent.Location.DistanceTo(_smartObject.Location))
             .WithActionLogic(new LightFireActionLogic(_smartObject, agent))
             .WithStateEffect(new Belief.BeliefBuilder(Facts.Predicates.FireIsLit).WithCondition(() => true).Build())
-            .WithStatePrecondition(new Belief.BeliefBuilder(new FastName($"At {_smartObject.Id}")).WithCondition(() => true).Build())
             .WithStatePrecondition(new Belief.BeliefBuilder(Facts.Preconditions.HasWood).WithCondition(() => true).Build())
             .Build();
         return action;

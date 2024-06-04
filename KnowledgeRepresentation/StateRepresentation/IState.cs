@@ -1,4 +1,3 @@
-using System;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 
 namespace UGOAP.KnowledgeRepresentation.StateRepresentation;

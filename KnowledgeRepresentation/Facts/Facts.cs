@@ -2,31 +2,32 @@
 
 namespace UGOAP.KnowledgeRepresentation.Facts;
 
-public static class Facts
+public record Facts
 {
-    public class Effects
+    public record Effects
     {
         public static FastName HasWood => AllNames.HasWood;
         public static  FastName FireLit => AllNames.FireLit;
     }
 
-    public class Preconditions
+    public record Preconditions
     {
         public static FastName HasWood => AllNames.HasWood;
     }
 
-    public class Predicates
+    public record Predicates
     {
         public static FastName FireIsLit => AllNames.FireIslit;
         public static FastName FireIsNotLit => AllNames.FireIsNotLit;
+        public static readonly FastName IsSitting = new FastName("IsSitting");
     }
 
-    public class Goals
+    public record Goals
     {
         public static readonly FastName LitFire = new FastName("LitFire");
     }
 
-    private class AllNames
+    private record AllNames
     {
         public static readonly FastName HasWood = new FastName("HasWood");
         public static readonly FastName FireIslit = new FastName("FireIslit");

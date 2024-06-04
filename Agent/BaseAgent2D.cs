@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Godot;
 using UGOAP.AgentComponents;
 using UGOAP.AgentComponents.Interfaces;
 using UGOAP.BehaviourSystem.Actions;
 using UGOAP.CommonUtils.FastName;
-using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 namespace UGOAP.Agent;

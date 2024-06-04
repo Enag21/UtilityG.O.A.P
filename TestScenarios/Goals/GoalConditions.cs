@@ -1,5 +1,4 @@
-﻿using System;
-using UGOAP.BehaviourSystem.Goals.SatisfactionConditions;
+﻿using UGOAP.BehaviourSystem.Goals.SatisfactionConditions;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 

@@ -55,7 +55,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_tmdfp"]
 radius = 28.0713
 
-[node name="FirePit" type="Node2D" node_paths=PackedStringArray("SensableComponent")]
+[node name="FirePit" type="Node2D" node_paths=PackedStringArray("SensableComponent") groups=["SmartObject"]]
 script = ExtResource("1_vgjpf")
 SensableComponent = NodePath("SensableComponent")
 

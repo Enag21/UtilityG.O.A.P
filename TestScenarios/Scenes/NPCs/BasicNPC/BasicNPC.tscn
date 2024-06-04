@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://1wdkeqos6dra"]
+[gd_scene load_steps=15 format=3 uid="uid://1wdkeqos6dra"]
 
 [ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_ml0to"]
 [ext_resource type="Script" path="res://AgentComponents/MoveComponent.cs" id="2_er2qj"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://BehaviourSystem/DecisionMakers/DecisionMakerComponent.cs" id="7_gx8er"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToLitTheFire.cs" id="7_o1xbp"]
 [ext_resource type="Texture2D" uid="uid://c2glk265rk24v" path="res://TestScenarios/Art/Characters/Basic Charakter Spritesheet.png" id="8_fdutg"]
+[ext_resource type="Script" path="res://TestScenarios/Desires/DesireToSitDown.cs" id="8_nut6x"]
 [ext_resource type="Script" path="res://AgentComponents/Sensors/SenseComponent.cs" id="10_om37l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hbo0f"]
@@ -51,6 +52,9 @@ script = ExtResource("6_3541g")
 [node name="DesireToLitTheFire" type="Node" parent="DesireComponent"]
 script = ExtResource("7_o1xbp")
 Weight = 5.0
+
+[node name="DesireToSitDown" type="Node" parent="DesireComponent"]
+script = ExtResource("8_nut6x")
 
 [node name="DecisionMakerComponent" type="Node" parent="." node_paths=PackedStringArray("DesireComponent")]
 script = ExtResource("7_gx8er")

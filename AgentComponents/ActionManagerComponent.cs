@@ -28,6 +28,7 @@ public partial class ActionManagerComponent : Node, IActionManager
     private void OnSmartObjectDeregistered(ISmartObject @object)
     {
         var actions = AvailableActions.Where(a => a.Provider == @object);
+        RemoveLocationBelief(@object);
         foreach (var action in actions)
         {
             AvailableActions.Remove(action);
@@ -38,7 +39,7 @@ public partial class ActionManagerComponent : Node, IActionManager
     private void OnSmartObjectRegistered(ISmartObject @object)
     {
         AvailableActions.UnionWith(CreateSmartObjectActions(@object));
-        AvailableActions.Add(CreateMovementAction(@object));
+        AddLocationBelief(@object);
     }
 
     private void SetUpActions()
@@ -46,8 +47,7 @@ public partial class ActionManagerComponent : Node, IActionManager
         foreach (var kvp in SmartObjectBlackboard.Instance.Objects)
         {
             var actions = CreateSmartObjectActions(kvp.Value);
-            var movementAction = CreateMovementAction(kvp.Value);
-            AvailableActions.Add(movementAction);
+            AddLocationBelief(kvp.Value);
             AvailableActions.UnionWith(actions);
         }
     }
@@ -63,10 +63,15 @@ public partial class ActionManagerComponent : Node, IActionManager
         return actions;
     }
 
-    private IAction CreateMovementAction(ISmartObject smartObject)
+    private void AddLocationBelief(ISmartObject smartObject)
     {
-        var movementAction = new MovementAction(new FastName($"Move to {smartObject.Id}"), _agent, smartObject);
-        AddChild(movementAction as Node);
-        return movementAction;
+        _beliefComponent.AddBelief(new Belief.BeliefBuilder(new FastName($"At {smartObject.Id}"))
+            .WithCondition(() => _agent.Location.DistanceTo(smartObject.Location) < 0.2f)
+            .Build());
+    }
+
+    private void RemoveLocationBelief(ISmartObject smartObject)
+    {
+        _beliefComponent.RemoveBelief(new FastName($"At {smartObject.Id}"));
     }
 }

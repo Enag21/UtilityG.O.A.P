@@ -3,12 +3,15 @@ using Godot;
 using UGOAP.AgentComponents.Interfaces;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.BehaviourSystem.Desires;
+using System;
 
 namespace UGOAP.AgentComponents;
 
 [GlobalClass]
 public partial class DesireComponent : Node, IGoalDriver
 {
+    [Export] public BehaviourComponent BehaviourComponent { get; private set; }
+    [Export] public float MinimumDesireWeightForReplanning { get; private set; } = 5.0f;
     public List<Desire> Desires { get; } = new();
     public List<Goal> ActiveGoals => GetActiveGoals();
 
@@ -19,6 +22,7 @@ public partial class DesireComponent : Node, IGoalDriver
             if (child is Desire desire)
             {
                 Desires.Add(desire);
+                desire.DesireTriggered += OnDesireTriggered;
             }
         }
     }
@@ -36,5 +40,13 @@ public partial class DesireComponent : Node, IGoalDriver
             activeGoals.AddRange(desire.Goals);
         }
         return activeGoals;
+    }
+
+    private void OnDesireTriggered(Desire desire)
+    {
+        if (desire.Weight > MinimumDesireWeightForReplanning)
+        {
+            BehaviourComponent.RequestReplanning();
+        }
     }
 }

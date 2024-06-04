@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UGOAP.CommonUtils.ExtensionMethods;
-using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 

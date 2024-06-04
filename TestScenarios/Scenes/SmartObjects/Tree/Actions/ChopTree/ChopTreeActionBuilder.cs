@@ -15,11 +15,11 @@ public class ChopTreeActionBuilder : IActionBuilder
 
     public IAction Build(IAgent agent)
     {
-        var action = new BasicAction.Builder(new FastName("ChopTree"), agent.State, _smartObject)
+        var action = new BasicAction.Builder(new FastName("ChopTree"), agent, _smartObject)
+            .WithInRangeRequired()
             .WithCost(() => agent.Location.DistanceTo(_smartObject.Location))
             .WithActionLogic(new ChopTreeActionLogic(_smartObject))
             .WithStateEffect(new Belief.BeliefBuilder(Facts.Effects.HasWood).WithCondition(() => true).Build())
-            .WithStatePrecondition(new Belief.BeliefBuilder(new FastName($"At {_smartObject.Id}")).WithCondition(() => true).Build())
             .Build();
         return action;
     }

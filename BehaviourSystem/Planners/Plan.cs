@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UGOAP.BehaviourSystem.Actions;
-using UGOAP.BehaviourSystem.Goals;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 namespace UGOAP.BehaviourSystem.Planners;
 
-public record Plan(Queue<IAction> Actions, float TotalCost, IState State = null);
+public record Plan(Queue<IAction> Actions, float TotalCost, IState State = null)
+{
+    public float Utility { get; private set; } = 0.0f;
+    public void SetUtility(float utility)
+    {
+        Utility = utility;
+    }
+}
 
 public interface IPlanNode
 {

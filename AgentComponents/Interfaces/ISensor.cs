@@ -1,5 +1,4 @@
-﻿using System;
-using UGOAP.KnowledgeRepresentation.StateRepresentation;
+﻿using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 namespace UGOAP;
 

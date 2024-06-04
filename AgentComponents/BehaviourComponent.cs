@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using Godot;
 using UGOAP.Agent;
 using UGOAP.AgentComponents.Interfaces;
@@ -25,6 +25,7 @@ public partial class BehaviourComponent : Node
 
     private PlannerComponent _plannerComponent;
     private bool _behaviourRunning = false;
+    private Plan _currentPlan;
     private IAgent _agent;
 
     public override void _Ready()
@@ -43,15 +44,33 @@ public partial class BehaviourComponent : Node
         }
     }
 
+    public void RequestReplanning()
+    {
+        var newPlan = ComputePlan();
+        // We need to recompute the utility of the current plan because now there might be new desires or goals
+        DecisionMakerComponent.ReComputeUtilityForPlan(_currentPlan);
+        if (newPlan.Utility > _currentPlan.Utility)
+        {
+            PlanExecutionComponent.StopCurrentPlan();
+            _currentPlan = newPlan;
+            PlanExecutionComponent.LoadPlan(_currentPlan);
+            _behaviourRunning = true;
+        }
+    }
+
     private bool AnyUnfulfilledGoals() => GoalDriver.ActiveGoals.Count > 0;
 
     private void SelectANewPlan()
     {
+        _currentPlan = ComputePlan();
+        PlanExecutionComponent.LoadPlan(_currentPlan);
+        _behaviourRunning = true;
+    }
+
+    private Plan ComputePlan()
+    {
         var plans = new HashSet<Plan>();
         GoalDriver.ActiveGoals.ForEach(goal => plans.Add(_plannerComponent.Plan(ActionManagerComponent.AvailableActions, goal, _agent.State)));
-        var plan = DecisionMakerComponent.Decide(plans);
-        PlanExecutionComponent.LoadPlan(plan);
-
-        _behaviourRunning = true;
+        return DecisionMakerComponent.Decide(plans);
     }
 }

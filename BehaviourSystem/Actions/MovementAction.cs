@@ -16,7 +16,7 @@ public partial class MovementAction : ActionBase
     private readonly ISmartObject _smartObject;
 
     public MovementAction(FastName actionName, IAgent agent, ISmartObject provider)
-        : base(actionName, agent.State, provider)
+        : base(actionName, agent, provider)
     {
         _agent = agent;
         _smartObject = provider;

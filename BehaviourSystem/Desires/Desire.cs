@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using UGOAP.Agent;
@@ -12,6 +13,7 @@ namespace UGOAP.BehaviourSystem.Desires;
 public abstract partial class Desire : Node
 {
     [Export] public float Weight { get; private set; } = 1.0f;
+    public event Action<Desire> DesireTriggered = delegate { };
     public FastName DesireName { get; private set; }
     public List<Goal> Goals { get; private set; } = new List<Goal>();
     protected  HashSet<Belief> triggers = new HashSet<Belief>();
@@ -38,6 +40,7 @@ public abstract partial class Desire : Node
         {
             if (!trigger.Evaluate()) continue;
             var goal = CreateGoal(trigger.Predicate);
+            DesireTriggered?.Invoke(this);
             if (Goals.Any(g => g.Name == goal.Name)) continue;
             goal.GoalSatisfied += () => { _markedForRemoval.Add(goal); };
             Goals.Add(goal);

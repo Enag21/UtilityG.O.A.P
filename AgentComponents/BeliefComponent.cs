@@ -25,9 +25,23 @@ public partial class BeliefComponent : Node, IBeliefComponent
 
     public void RemoveBelief(FastName predicate) => Beliefs.Remove(predicate);
 
+    /// <summary>
+    /// Retrieves a Belief object based on the given predicate.
+    /// If the Belief does not exist, it creates a new Belief with false condition, and the given predicate and adds it to the Beliefs dictionary.
+    /// </summary>
+    /// <param name="predicate">The predicate used to retrieve the Belief.</param>
+    /// <returns>The Belief object associated with the given predicate.</returns>
     public Belief GetBelief(FastName predicate)
     {
         var belief = Beliefs.GetValueOrDefault(predicate);
+        if (belief == null)
+        {
+            var newBelief = new Belief.BeliefBuilder(predicate)
+                .WithCondition(() => false)
+                .Build();
+            AddBelief(newBelief);
+            return newBelief;
+        }
         return belief;
     }
 
