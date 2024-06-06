@@ -16,6 +16,7 @@ public partial class ActionManagerComponent : Node, IActionManager
     public HashSet<IAction> AvailableActions { get; } = new HashSet<IAction>();
     private IAgent _agent;
     private IBeliefComponent _beliefComponent;
+    private HashSet<ISmartObject> _registeredSmartObjects = new HashSet<ISmartObject>();
 
     public override void _Ready()
     {
@@ -23,10 +24,12 @@ public partial class ActionManagerComponent : Node, IActionManager
         _beliefComponent = _agent.State.BeliefComponent;
         SmartObjectBlackboard.Instance.ObjectRegistered += OnSmartObjectRegistered;
         SmartObjectBlackboard.Instance.ObjectDeregistered += OnSmartObjectDeregistered;
+        SetUpActions();
     }
 
     private void OnSmartObjectDeregistered(ISmartObject @object)
     {
+        _registeredSmartObjects.Remove(@object);
         var actions = AvailableActions.Where(a => a.Provider == @object);
         RemoveLocationBelief(@object);
         foreach (var action in actions)
@@ -38,16 +41,20 @@ public partial class ActionManagerComponent : Node, IActionManager
 
     private void OnSmartObjectRegistered(ISmartObject @object)
     {
+        if (_registeredSmartObjects.Contains(@object)) return;
+        _registeredSmartObjects.Add(@object);
         AvailableActions.UnionWith(CreateSmartObjectActions(@object));
         AddLocationBelief(@object);
     }
 
     private void SetUpActions()
     {
-        foreach (var kvp in SmartObjectBlackboard.Instance.Objects)
+        foreach (var (_, smartObject) in SmartObjectBlackboard.Instance.Objects)
         {
-            var actions = CreateSmartObjectActions(kvp.Value);
-            AddLocationBelief(kvp.Value);
+            if (_registeredSmartObjects.Contains(smartObject)) continue;
+            _registeredSmartObjects.Add(smartObject);
+            var actions = CreateSmartObjectActions(smartObject);
+            AddLocationBelief(smartObject);
             AvailableActions.UnionWith(actions);
         }
     }
