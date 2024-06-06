@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Trait" load_steps=2 format=3 uid="uid://bamkpqu6rpdae"]
+
+[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/Trait.cs" id="1_7getc"]
+
+[resource]
+script = ExtResource("1_7getc")
+Type = 0
+Value = 0.879

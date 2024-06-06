@@ -1,16 +1,21 @@
-﻿namespace UGOAP.KnowledgeRepresentation.PersonalitySystem;
+﻿using Godot;
+using UGOAP.KnowledgeRepresentation.Facts;
+
+namespace UGOAP.KnowledgeRepresentation.PersonalitySystem;
 
 public enum TraitType
 {
-    None = 0,
-    Good = 1,
-    Bad = 2
+    LikesRain,
+    None,
 }
 
-public class Trait
+[GlobalClass]
+public partial class Trait : Resource
 {
-    public TraitType Type { get; }
-    public float Value { get; }
+    [Export] public TraitType Type { get; private set; }
+
+    [Export(PropertyHint.Range, "-1.0f, 1.0f")]
+    public float Value { get; set; }
 
     public Trait(TraitType type, float value) => (Type, Value) = (type, value);
 }

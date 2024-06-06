@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://1wdkeqos6dra"]
+[gd_scene load_steps=17 format=3 uid="uid://1wdkeqos6dra"]
 
 [ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_ml0to"]
 [ext_resource type="Script" path="res://AgentComponents/MoveComponent.cs" id="2_er2qj"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://c2glk265rk24v" path="res://TestScenarios/Art/Characters/Basic Charakter Spritesheet.png" id="8_fdutg"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToSitDown.cs" id="8_nut6x"]
 [ext_resource type="Script" path="res://AgentComponents/Sensors/SenseComponent.cs" id="10_om37l"]
+[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/TraitManager.cs" id="12_wk552"]
+[ext_resource type="Resource" uid="uid://bamkpqu6rpdae" path="res://TestScenarios/Scenes/NPCs/Traits/LikesRain.tres" id="13_1w7g8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hbo0f"]
 
@@ -68,3 +70,7 @@ script = ExtResource("10_om37l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SenseComponent"]
 shape = SubResource("CircleShape2D_g7nej")
+
+[node name="TraitManager" type="Node" parent="."]
+script = ExtResource("12_wk552")
+Traits = Array[Object]([ExtResource("13_1w7g8")])

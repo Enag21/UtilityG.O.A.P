@@ -14,7 +14,6 @@ gravity = Vector3(0, 98, 0)
 scale_min = 0.3
 
 [node name="Rain" type="GPUParticles2D"]
-modulate = Color(1, 1, 1, 0.501961)
 position = Vector2(483, -39)
 amount = 800
 process_material = SubResource("ParticleProcessMaterial_ub8am")
