@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Net;
 using Godot;
 using UGOAP.BehaviourSystem.Desires;
 using UGOAP.BehaviourSystem.Goals;
@@ -26,12 +26,12 @@ public partial class DesireToReactToRain : Desire
         {
             var trigger = new Belief.BeliefBuilder(new FastName("IsRaining"))
                 .WithCondition(() => WeatherComponent.Instance.CurrentWeather == WeatherType.Rain).Build();
-            var goal = new Goal.Builder(new FastName("ReactToRain"))
+            var goal = () => new Goal.Builder(new FastName("ReactToRain"))
                 .WithPriority(20.0f)
                 .WithSatisfactionCondition(new IsCoveredCondition())
                 .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.IsCovered).WithCondition(() => true).Build())
                 .Build();
-            triggerMapping.Add(trigger, new List<Goal>() { goal });
+            triggerMapping.Add(trigger, new List<Func<Goal>>() { goal });
         }
     }
 }

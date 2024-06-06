@@ -33,6 +33,6 @@ public partial class TraitManager : Node, ITraitManager
                 return trait;
             }
         }
-        return new Trait(TraitType.None, 0);
+        return Trait.None;
     }
 }
