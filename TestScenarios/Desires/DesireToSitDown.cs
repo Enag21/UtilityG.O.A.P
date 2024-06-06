@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using UGOAP.BehaviourSystem.Desires;
 using UGOAP.BehaviourSystem.Goals;
@@ -12,21 +13,16 @@ namespace UGOAP.TestScenarion.Desires;
 [GlobalClass]
 public partial class DesireToSitDown : Desire
 {
-    protected override Goal CreateGoal(FastName triggerName)
+    protected override void ConfigureTriggers()
     {
+        var trigger = new Belief.BeliefBuilder(new FastName("NotSitting"))
+            .WithCondition(() => _agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsSitting).Evaluate() == false).Build();
         var goal = new Goal.Builder(new FastName("SitDown"))
             .WithSatisfactionCondition(new SitDownCondition())
             .WithPriority(1.0f)
             .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.IsSitting).WithCondition(() => true).Build())
             .Build();
-        return goal;
-    }
-
-    protected override void OnReady()
-    {
-        var trigger = new Belief.BeliefBuilder(new FastName("NotSitting"))
-            .WithCondition(() => _agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsSitting).Evaluate() == false).Build();
-        triggers.Add(trigger);
+        triggerMapping.Add(trigger, new List<Goal>() { goal });
     }
 }
 
