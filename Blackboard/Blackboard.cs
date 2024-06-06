@@ -38,4 +38,18 @@ public partial class Blackboard<T> : Singleton<Blackboard<T>>
 
         return default(TGeneric);
     }
+
+    public void TryGetGenericObject<TGeneric>(out TGeneric result)
+        where TGeneric : T
+    {
+        foreach (var (_, obj) in Objects)
+        {
+            if (obj is TGeneric genericObj)
+            {
+                result = genericObj;
+                return;
+            }
+        }
+        result = default(TGeneric);
+    }
 }

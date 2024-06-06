@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ixn3s580l18w"]
+
+[ext_resource type="Script" path="res://TestScenarios/Scenes/SmartObjects/House/SmartHouse.cs" id="1_cehob"]
+[ext_resource type="PackedScene" uid="uid://c7nfyy5tyxiib" path="res://TestScenarios/Scenes/SmartObjects/House/House.tscn" id="2_xad0y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qobak"]
+size = Vector2(79, 77)
+
+[node name="SmartHouse" type="Area2D" groups=["SmartObject"]]
+script = ExtResource("1_cehob")
+
+[node name="House" parent="." instance=ExtResource("2_xad0y")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -33.5)
+shape = SubResource("RectangleShape2D_qobak")
