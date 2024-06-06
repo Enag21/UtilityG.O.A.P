@@ -5,6 +5,7 @@ using UGOAP.KnowledgeRepresentation.BeliefSystem;
 
 namespace UGOAP.AgentComponents;
 
+[GlobalClass]
 public partial class BeliefComponent : Node, IBeliefComponent
 {
     public Dictionary<FastName, Belief> Beliefs { get; private set; } =
