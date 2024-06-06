@@ -17,9 +17,11 @@ public record Facts
 
     public record Predicates
     {
-        public static FastName FireIsLit = new FastName("FireIsLit");
-        public static FastName FireIsNotLit = new FastName("FireIsNotLit");
+        public static readonly FastName FireIsLit = new FastName("FireIsLit");
+        public static readonly FastName FireIsNotLit = new FastName("FireIsNotLit");
         public static readonly FastName IsSitting = new FastName("IsSitting");
+        public static readonly FastName IsInsideHouse = new FastName("IsInsideHouse");
+        public static readonly FastName IsCovered = new FastName("IsCovered");
     }
 
     public record Goals
