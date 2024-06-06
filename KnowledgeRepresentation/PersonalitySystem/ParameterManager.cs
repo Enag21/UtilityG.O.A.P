@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using Godot;
 using UGOAP.CommonUtils.FastName;
 
 namespace UGOAP.KnowledgeRepresentation.PersonalitySystem;
 
-public class ParameterManager : IParameterManager
+[GlobalClass]
+public partial class ParameterManager : Node, IParameterManager
 {
     public Dictionary<FastName, IParameter> Parameters { get; }
     public ParameterManager() => Parameters = new Dictionary<FastName, IParameter>();

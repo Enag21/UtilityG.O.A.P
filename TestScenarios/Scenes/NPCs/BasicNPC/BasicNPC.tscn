@@ -1,20 +1,29 @@
-[gd_scene load_steps=17 format=3 uid="uid://1wdkeqos6dra"]
+[gd_scene load_steps=22 format=3 uid="uid://1wdkeqos6dra"]
 
 [ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_ml0to"]
 [ext_resource type="Script" path="res://AgentComponents/MoveComponent.cs" id="2_er2qj"]
+[ext_resource type="Script" path="res://Agent/StateManager.cs" id="2_mm06a"]
+[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/Trait.cs" id="3_youu5"]
 [ext_resource type="Script" path="res://AgentComponents/BehaviourComponent.cs" id="4_15320"]
 [ext_resource type="Script" path="res://AgentComponents/ActionExecutionComponent.cs" id="5_7sfwv"]
+[ext_resource type="Script" path="res://AgentComponents/BeliefComponent.cs" id="5_51qm6"]
 [ext_resource type="Script" path="res://AgentComponents/DesireComponent.cs" id="6_3541g"]
+[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/ParameterManager.cs" id="6_fqm83"]
 [ext_resource type="Script" path="res://AgentComponents/ActionManagerComponent.cs" id="6_grple"]
 [ext_resource type="Script" path="res://BehaviourSystem/DecisionMakers/DecisionMakerComponent.cs" id="7_gx8er"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToLitTheFire.cs" id="7_o1xbp"]
 [ext_resource type="Texture2D" uid="uid://c2glk265rk24v" path="res://TestScenarios/Art/Characters/Basic Charakter Spritesheet.png" id="8_fdutg"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToSitDown.cs" id="8_nut6x"]
 [ext_resource type="Script" path="res://AgentComponents/Sensors/SenseComponent.cs" id="10_om37l"]
+[ext_resource type="Script" path="res://TestScenarios/Desires/DesireToReactToRain.cs" id="11_oateb"]
 [ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/TraitManager.cs" id="12_wk552"]
-[ext_resource type="Resource" uid="uid://bamkpqu6rpdae" path="res://TestScenarios/Scenes/NPCs/Traits/LikesRain.tres" id="13_1w7g8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hbo0f"]
+
+[sub_resource type="Resource" id="Resource_driym"]
+script = ExtResource("3_youu5")
+Type = 1
+Value = 1.14
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3yifj"]
 atlas = ExtResource("8_fdutg")
@@ -23,13 +32,30 @@ region = Rect2(13.7903, 9.18407, 21.8564, 29.3696)
 [sub_resource type="CircleShape2D" id="CircleShape2D_g7nej"]
 radius = 68.0294
 
-[node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent")]
+[node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "StateManager")]
 script = ExtResource("1_ml0to")
 MoveComponent = NodePath("MoveComponent")
 BehaviourComponent = NodePath("BehaviourComponent")
+StateManager = NodePath("StateManager")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hbo0f")
+
+[node name="StateManager" type="Node" parent="." node_paths=PackedStringArray("beliefComponent", "traitManager", "parameterManager")]
+script = ExtResource("2_mm06a")
+beliefComponent = NodePath("BeliefComponent")
+traitManager = NodePath("TraitManager")
+parameterManager = NodePath("ParameterManager")
+
+[node name="TraitManager" type="Node" parent="StateManager"]
+script = ExtResource("12_wk552")
+Traits = Array[Object]([SubResource("Resource_driym")])
+
+[node name="BeliefComponent" type="Node" parent="StateManager"]
+script = ExtResource("5_51qm6")
+
+[node name="ParameterManager" type="Node" parent="StateManager"]
+script = ExtResource("6_fqm83")
 
 [node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("Actor")]
 script = ExtResource("2_er2qj")
@@ -58,6 +84,10 @@ Weight = 5.0
 [node name="DesireToSitDown" type="Node" parent="DesireComponent"]
 script = ExtResource("8_nut6x")
 
+[node name="DesireToReactToRain" type="Node" parent="DesireComponent"]
+script = ExtResource("11_oateb")
+Weight = 50.0
+
 [node name="DecisionMakerComponent" type="Node" parent="." node_paths=PackedStringArray("DesireComponent")]
 script = ExtResource("7_gx8er")
 DesireComponent = NodePath("../DesireComponent")
@@ -70,7 +100,3 @@ script = ExtResource("10_om37l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SenseComponent"]
 shape = SubResource("CircleShape2D_g7nej")
-
-[node name="TraitManager" type="Node" parent="."]
-script = ExtResource("12_wk552")
-Traits = Array[Object]([ExtResource("13_1w7g8")])

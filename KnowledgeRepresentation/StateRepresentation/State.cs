@@ -12,10 +12,10 @@ public class State : IState
     public ITraitManager TraitManager { get; private set; }
     public IParameterManager ParameterManager { get; private set; }
 
-    public State()
+    public State(TraitManager traitManager)
     {
         BeliefComponent = new BeliefComponent();
-        TraitManager = new TraitManager();
+        TraitManager = traitManager;
         ParameterManager = new ParameterManager();
     }
 
