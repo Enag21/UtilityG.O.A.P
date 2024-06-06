@@ -45,11 +45,11 @@ public partial class DesireToLitTheFire : Desire
         var trigger = new Belief.BeliefBuilder(Facts.Predicates.FireIsNotLit)
             .WithCondition(() => _firePit.IsLit == false)
             .Build();
-        var goal = new Goal.Builder(Facts.Goals.LitFire)
+        var goal = () => new Goal.Builder(Facts.Goals.LitFire)
             .WithSatisfactionCondition(new FireLitCondition())
             .WithPriority(10.0f)
             .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.FireIsLit).WithCondition(() => true).Build())
             .Build();
-        triggerMapping.Add(trigger, new List<Goal>() { goal });
+        triggerMapping.Add(trigger, new List<Func<Goal>>() { goal });
     }
 }
