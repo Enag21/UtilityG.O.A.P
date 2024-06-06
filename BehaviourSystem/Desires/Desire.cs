@@ -16,7 +16,7 @@ public abstract partial class Desire : Node
     public event Action<Desire> DesireTriggered = delegate { };
     public FastName DesireName { get; private set; }
     public List<Goal> Goals { get; private set; } = new List<Goal>();
-    protected Dictionary<Belief, List<Goal>> triggerMapping = new Dictionary<Belief, List<Goal>>();
+    protected Dictionary<Belief, List<Func<Goal>>> triggerMapping = new Dictionary<Belief, List<Func<Goal>>>();
     protected IAgent _agent;
     private List<Goal> _markedForRemoval = new List<Goal>();
 
@@ -36,11 +36,12 @@ public abstract partial class Desire : Node
 
     protected virtual void EvaluateTriggers()
     {
-        foreach (var (trigger, goals) in triggerMapping)
+        foreach (var (trigger, goalsCreators) in triggerMapping)
         {
             if (!trigger.Evaluate()) continue;
-            foreach (var goal in goals)
+            foreach (var goalCreator in goalsCreators)
             {
+                var goal = goalCreator();
                 var goalAlreadyExist = Goals.Any(g => g.Name == goal.Name);
                 if (goalAlreadyExist) continue;
                 goal.GoalSatisfied += () => { _markedForRemoval.Add(goal); };

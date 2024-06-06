@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using UGOAP.BehaviourSystem.Desires;
@@ -17,12 +18,12 @@ public partial class DesireToSitDown : Desire
     {
         var trigger = new Belief.BeliefBuilder(new FastName("NotSitting"))
             .WithCondition(() => _agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsSitting).Evaluate() == false).Build();
-        var goal = new Goal.Builder(new FastName("SitDown"))
+        var goal = () => new Goal.Builder(new FastName("SitDown"))
             .WithSatisfactionCondition(new SitDownCondition())
             .WithPriority(1.0f)
             .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.IsSitting).WithCondition(() => true).Build())
             .Build();
-        triggerMapping.Add(trigger, new List<Goal>() { goal });
+        triggerMapping.Add(trigger, new List<Func<Goal>>() { goal });
     }
 }
 
