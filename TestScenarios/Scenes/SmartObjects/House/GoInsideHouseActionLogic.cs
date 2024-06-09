@@ -4,6 +4,8 @@ using UGOAP.BehaviourSystem.Actions;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.SmartObjects;
 
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.House;
+
 public partial class GoInsideHouseActionLogic : IActionLogic
 {
     public event Action LogicFinished;

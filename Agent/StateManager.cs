@@ -8,14 +8,14 @@ namespace UGOAP.Agent;
 [GlobalClass]
 public partial class StateManager : Node
 {
-    [Export] BeliefComponent beliefComponent;
-    [Export] TraitManager traitManager;
-    [Export] ParameterManager parameterManager;
+    [Export] BeliefComponent _beliefComponent;
+    [Export] TraitManager _traitManager;
+    [Export] ParameterManager _parameterManager;
 
     public State State { get; private set; }
 
     public override void _Ready()
     {
-        State = new State(beliefComponent, traitManager, parameterManager);
+        State = new State(_beliefComponent, _traitManager, _parameterManager);
     }
 }

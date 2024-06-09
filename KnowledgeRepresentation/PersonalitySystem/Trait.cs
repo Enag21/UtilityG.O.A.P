@@ -1,6 +1,4 @@
 ﻿using Godot;
-using Godot.NativeInterop;
-using UGOAP.KnowledgeRepresentation.Facts;
 
 namespace UGOAP.KnowledgeRepresentation.PersonalitySystem;
 
@@ -14,8 +12,8 @@ public enum TraitType
 [GlobalClass]
 public partial class Trait : Resource
 {
-    public TraitType Type { get; private set; }
-    public float Value { get; set; }
+    [Export]public TraitType Type { get; private set; }
+    [Export] public float Value { get; set; }
     public static Trait None { get; } = new Trait(TraitType.None, 0.0f);
 
     public Trait() { }

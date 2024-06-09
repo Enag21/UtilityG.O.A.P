@@ -1,37 +1,37 @@
-using System;
-using System.Collections.Generic;
 using Godot;
 using UGOAP.BehaviourSystem.Desires;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.BehaviourSystem.Goals.SatisfactionConditions;
-using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
+using UGOAP.TestScenarios.Systems.WeatherSystem;
 
-namespace UGOAP;
+namespace UGOAP.TestScenarios.Desires;
 
 [GlobalClass]
 public partial class DesireToReactToRain : Desire
 {
     protected override void ConfigureTriggers()
     {
-        if (_agent.State.TraitManager.GetTrait(TraitType.LikesRain) != Trait.None)
+        if (Agent.State.TraitManager.GetTrait(TraitType.LikesRain) != Trait.None)
         {
             // noop
             // TODO: Do something differnet if the agent likes the rain
         }
-        if (_agent.State.TraitManager.GetTrait(TraitType.DislikesRain) != Trait.None)
+        if (Agent.State.TraitManager.GetTrait(TraitType.DislikesRain) != Trait.None)
         {
-            var trigger = new Belief.BeliefBuilder(new FastName("IsRaining"))
-                .WithCondition(() => WeatherComponent.Instance.CurrentWeather == WeatherType.Rain).Build();
-            var goal = () => new Goal.Builder(new FastName("ReactToRain"))
+            var trigger = new Belief.BeliefBuilder(new CommonUtils.FastName.FastName("IsRaining"))
+                .WithCondition(() => Systems.WeatherSystem.WeatherComponent.Instance.CurrentWeather == WeatherType.Rain).Build();
+            var goal = () => new Goal.Builder(new CommonUtils.FastName.FastName("ReactToRain"))
                 .WithPriority(20.0f)
                 .WithSatisfactionCondition(new IsCoveredCondition())
                 .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.IsCovered).WithCondition(() => true).Build())
                 .Build();
-            triggerMapping.Add(trigger, new List<Func<Goal>>() { goal });
+            var triggerMap = new TriggerGoalMap(trigger);
+            triggerMap.GoalCreators.Add(goal);
+            Triggers.Add(triggerMap);
         }
     }
 }

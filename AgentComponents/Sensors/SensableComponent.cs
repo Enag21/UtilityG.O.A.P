@@ -1,8 +1,8 @@
 using Godot;
-using UGOAP.AgentComponents;
+using UGOAP.AgentComponents.Interfaces;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 
-namespace UGOAP;
+namespace UGOAP.AgentComponents.Sensors;
 
 [GlobalClass]
 public partial class SensableComponent : Area2D, ISensable

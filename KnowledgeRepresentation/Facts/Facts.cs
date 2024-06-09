@@ -7,7 +7,7 @@ public record Facts
     public record Effects
     {
         public static FastName HasWood = new FastName("HasWood");
-        public static  FastName FireLit = new FastName("FireLit");
+        public static FastName FireLit = new FastName("FireLit");
     }
 
     public record Preconditions

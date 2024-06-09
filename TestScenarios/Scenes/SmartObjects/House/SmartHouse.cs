@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 using UGOAP.Agent;
@@ -8,6 +7,7 @@ using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.SmartObjects;
 
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.House;
 
 [GlobalClass]
 public partial class SmartHouse : Area2D, ISmartObject
@@ -43,4 +43,3 @@ public partial class SmartHouse : Area2D, ISmartObject
         }
     }
 }
-

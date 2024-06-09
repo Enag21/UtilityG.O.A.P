@@ -1,6 +1,8 @@
 using Godot;
 using UGOAP.CommonUtils;
 
+namespace UGOAP.TestScenarios.Systems.WeatherSystem;
+
 [GlobalClass]
 public partial class WeatherComponent : Singleton<WeatherComponent>, IWeatherSystem
 {
@@ -15,12 +17,12 @@ public partial class WeatherComponent : Singleton<WeatherComponent>, IWeatherSys
         {
             case WeatherType.Normal:
                 CurrentWeather = WeatherType.Normal;
-                EventBus.EmitRainEnded();
+                Autoloads.EventBus.EmitRainEnded();
                 _rain.Visible = false;
                 break;
             case WeatherType.Rain:
                 CurrentWeather = WeatherType.Rain;
-                EventBus.EmitRainStarted();
+                Autoloads.EventBus.EmitRainStarted();
                 _rain.Visible = true;
                 break;
         }

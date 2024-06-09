@@ -1,6 +1,6 @@
 ﻿using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
-namespace UGOAP;
+namespace UGOAP.AgentComponents.Interfaces;
 
 public interface ISensor
 {

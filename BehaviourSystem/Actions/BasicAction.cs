@@ -1,7 +1,6 @@
 using System;
 using Godot;
 using UGOAP.Agent;
-using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 using UGOAP.SmartObjects;
@@ -12,7 +11,7 @@ public partial class BasicAction : ActionBase
 {
     public override event Action ActionFinished;
 
-    private BasicAction(FastName actionName, IAgent state, ISmartObject provider)
+    private BasicAction(CommonUtils.FastName.FastName actionName, IAgent state, ISmartObject provider)
         : base(actionName, state, provider) { }
 
     public override void _EnterTree()
@@ -24,7 +23,7 @@ public partial class BasicAction : ActionBase
     {
         readonly BasicAction _action;
 
-        public Builder(FastName actionName, IAgent state, ISmartObject provider)
+        public Builder(CommonUtils.FastName.FastName actionName, IAgent state, ISmartObject provider)
         {
             _action = new BasicAction(actionName, state, provider);
         }
@@ -58,7 +57,7 @@ public partial class BasicAction : ActionBase
             _action.ActionLogic = actionLogic;
             _action.ActionLogic.LogicFinished += () =>
             {
-                _action.ApplyEffects(_action.agent.State);
+                _action.ApplyEffects(_action.Agent.State);
                 _action.ActionFinished?.Invoke();
             };
             return this;

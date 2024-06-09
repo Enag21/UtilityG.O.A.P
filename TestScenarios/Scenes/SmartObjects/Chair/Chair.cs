@@ -7,6 +7,8 @@ using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.SmartObjects;
 
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.Chair;
+
 [GlobalClass]
 public partial class Chair : Area2D, ISmartObject
 {

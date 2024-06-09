@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace UGOAP;
+namespace UGOAP.CommonUtils.ExtensionMethods;
 
 public static class DelegateExtensions
 {

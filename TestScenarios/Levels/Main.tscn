@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://d1pt4qdm72lrq"]
+[gd_scene load_steps=11 format=4 uid="uid://d1pt4qdm72lrq"]
 
 [ext_resource type="PackedScene" uid="uid://hxqcs7d0ykv4" path="res://TestScenarios/Art/VFX/Rain/Rain.tscn" id="1_3c8jw"]
 [ext_resource type="PackedScene" uid="uid://dn8gi1moa7qwr" path="res://TestScenarios/Tilemaps/Grass.tscn" id="1_6vktw"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://o5emc8isvqb8" path="res://TestScenarios/Scenes/SmartObjects/FirePit/FirePit.tscn" id="4_m1rol"]
 [ext_resource type="PackedScene" uid="uid://b38461qtxj7kf" path="res://TestScenarios/Scenes/SmartObjects/Chair/Chair.tscn" id="6_687iv"]
 [ext_resource type="PackedScene" uid="uid://ixn3s580l18w" path="res://TestScenarios/Scenes/SmartObjects/House/SmartHouse.tscn" id="9_mh063"]
+[ext_resource type="PackedScene" uid="uid://ds2mi8mfrl0rh" path="res://TestScenarios/Scenes/SmartObjects/Animal/SmartAnimal.tscn" id="9_mophx"]
 
 [node name="Main" type="Node2D"]
 
@@ -61,8 +62,12 @@ position = Vector2(389, 178)
 [node name="SmartHouse" parent="SmartObjects" instance=ExtResource("9_mh063")]
 position = Vector2(67, 91)
 
-[node name="BasicNpc" parent="." node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "StateManager") instance=ExtResource("2_5aqnw")]
+[node name="SmartAnimal" parent="SmartObjects" node_paths=PackedStringArray("_healthComponent", "_hitBoxComponent") instance=ExtResource("9_mophx")]
+position = Vector2(540, 99)
+_healthComponent = NodePath("HealthComponent")
+_hitBoxComponent = NodePath("HitBoxComponent")
+
+[node name="BasicNpc" parent="." node_paths=PackedStringArray("MoveComponent", "BehaviourComponent") instance=ExtResource("2_5aqnw")]
 position = Vector2(271, 151)
 MoveComponent = NodePath("MoveComponent")
 BehaviourComponent = NodePath("BehaviourComponent")
-StateManager = NodePath("StateManager")

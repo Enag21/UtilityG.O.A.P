@@ -6,32 +6,32 @@ using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.SmartObjects;
 
-namespace UGOAP;
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.FirePit;
 
 [GlobalClass]
 public partial class FirePit : Node2D, ISmartObject
 {
-    [Export] public SensableComponent SensableComponent { get; private set; }
+    [Export] public AgentComponents.Sensors.SensableComponent SensableComponent { get; private set; }
     public FastName Id { get; private set; }
     public Vector2 Location => GlobalPosition;
     public HashSet<IActionBuilder> SuppliedActionBuilders { get; } = new();
     public bool IsLit { get; private set; } = true;
 
-    private Timer timer;
+    private Timer _timer;
     private AnimatedSprite2D _animatedSprite;
 
     public override void _Ready()
     {
         Id = new FastName(Name);
-        SuppliedActionBuilders.Add(new LightFireActionBuilder(this));
+        SuppliedActionBuilders.Add(new Actions.LightFireActionBuilder(this));
 
         _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _animatedSprite.Play("Lit");
 
-        timer = new Timer() { OneShot = true, WaitTime = 5.0f };
-        timer.Timeout += UnLitFire;
-        AddChild(timer);
-        timer.Start();
+        _timer = new Timer() { OneShot = true, WaitTime = 5.0f };
+        _timer.Timeout += UnLitFire;
+        AddChild(_timer);
+        _timer.Start();
 
         SensableComponent.AddBelief(new Belief.BeliefBuilder(Facts.Predicates.FireIsLit)
             .WithCondition(() => IsLit)
@@ -50,6 +50,6 @@ public partial class FirePit : Node2D, ISmartObject
     {
         IsLit = true;
         _animatedSprite.Play("Lit");
-        timer.Start();
+        _timer.Start();
     }
 }

@@ -5,6 +5,8 @@ using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.SmartObjects;
 
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.Chair;
+
 public partial class SitDownActionBuilder : IActionBuilder
 {
     private ISmartObject _provider;

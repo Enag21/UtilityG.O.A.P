@@ -6,7 +6,7 @@ using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.SmartObjects;
 
-namespace UGOAP;
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.FirePit.Actions;
 
 public partial class LightFireActionBuilder : Node, IActionBuilder
 {

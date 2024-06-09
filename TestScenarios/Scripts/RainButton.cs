@@ -1,4 +1,7 @@
 using Godot;
+using UGOAP.TestScenarios.Systems.WeatherSystem;
+
+namespace UGOAP.TestScenarios.Scripts;
 
 public partial class RainButton : Button
 {
@@ -9,13 +12,13 @@ public partial class RainButton : Button
 
     private void OnButtonPressed()
     {
-        switch (WeatherComponent.Instance.CurrentWeather)
+        switch (Systems.WeatherSystem.WeatherComponent.Instance.CurrentWeather)
         {
             case WeatherType.Rain:
-                WeatherComponent.Instance.ChangeWeather(WeatherType.Normal);
+                Systems.WeatherSystem.WeatherComponent.Instance.ChangeWeather(WeatherType.Normal);
                 break;
             case WeatherType.Normal:
-                WeatherComponent.Instance.ChangeWeather(WeatherType.Rain);
+                Systems.WeatherSystem.WeatherComponent.Instance.ChangeWeather(WeatherType.Rain);
                 break;
         }
     }

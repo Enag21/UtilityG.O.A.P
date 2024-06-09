@@ -1,6 +1,7 @@
 using Godot;
 using UGOAP.CommonUtils;
 
+namespace UGOAP.TestScenarios.Autoloads;
 
 public partial class EventBus : Singleton<EventBus>
 {

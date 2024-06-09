@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Godot;
 using UGOAP.Agent;
+using UGOAP.AgentComponents.Interfaces;
 
-namespace UGOAP;
+namespace UGOAP.AgentComponents.Sensors;
 
 [GlobalClass]
 public partial class SenseComponent : Area2D, ISensor

@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://1wdkeqos6dra"]
+[gd_scene load_steps=22 format=3 uid="uid://1wdkeqos6dra"]
 
 [ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_ml0to"]
 [ext_resource type="Script" path="res://AgentComponents/MoveComponent.cs" id="2_er2qj"]
 [ext_resource type="Script" path="res://Agent/StateManager.cs" id="2_mm06a"]
+[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/Trait.cs" id="4_33s8l"]
 [ext_resource type="Script" path="res://AgentComponents/BehaviourComponent.cs" id="4_15320"]
 [ext_resource type="Script" path="res://AgentComponents/ActionExecutionComponent.cs" id="5_7sfwv"]
 [ext_resource type="Script" path="res://AgentComponents/BeliefComponent.cs" id="5_51qm6"]
@@ -19,6 +20,11 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hbo0f"]
 
+[sub_resource type="Resource" id="Resource_cug74"]
+script = ExtResource("4_33s8l")
+Type = 1
+Value = 1.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_3yifj"]
 atlas = ExtResource("8_fdutg")
 region = Rect2(13.7903, 9.18407, 21.8564, 29.3696)
@@ -26,24 +32,24 @@ region = Rect2(13.7903, 9.18407, 21.8564, 29.3696)
 [sub_resource type="CircleShape2D" id="CircleShape2D_g7nej"]
 radius = 68.0294
 
-[node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "StateManager")]
+[node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager")]
 script = ExtResource("1_ml0to")
 MoveComponent = NodePath("MoveComponent")
 BehaviourComponent = NodePath("BehaviourComponent")
-StateManager = NodePath("StateManager")
+_stateManager = NodePath("StateManager")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hbo0f")
 
-[node name="StateManager" type="Node" parent="." node_paths=PackedStringArray("beliefComponent", "traitManager", "parameterManager")]
+[node name="StateManager" type="Node" parent="." node_paths=PackedStringArray("_beliefComponent", "_traitManager", "_parameterManager")]
 script = ExtResource("2_mm06a")
-beliefComponent = NodePath("BeliefComponent")
-traitManager = NodePath("TraitManager")
-parameterManager = NodePath("ParameterManager")
+_beliefComponent = NodePath("BeliefComponent")
+_traitManager = NodePath("TraitManager")
+_parameterManager = NodePath("ParameterManager")
 
 [node name="TraitManager" type="Node" parent="StateManager"]
 script = ExtResource("12_wk552")
-Traits = Array[Object]([])
+Traits = Array[Object]([SubResource("Resource_cug74")])
 
 [node name="BeliefComponent" type="Node" parent="StateManager"]
 script = ExtResource("5_51qm6")
@@ -68,8 +74,9 @@ script = ExtResource("5_7sfwv")
 [node name="ActionManagerComponent" type="Node" parent="."]
 script = ExtResource("6_grple")
 
-[node name="DesireComponent" type="Node" parent="."]
+[node name="DesireComponent" type="Node" parent="." node_paths=PackedStringArray("BehaviourComponent")]
 script = ExtResource("6_3541g")
+BehaviourComponent = NodePath("../BehaviourComponent")
 
 [node name="DesireToLitTheFire" type="Node" parent="DesireComponent"]
 script = ExtResource("7_o1xbp")

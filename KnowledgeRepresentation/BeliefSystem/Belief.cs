@@ -1,6 +1,5 @@
 ﻿using System;
 using Godot;
-using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 using UGOAP.SmartObjects;
 
@@ -8,12 +7,12 @@ namespace UGOAP.KnowledgeRepresentation.BeliefSystem;
 
 public class Belief : ICopyable<Belief>
 {
-    public FastName Predicate { get; set; }
+    public CommonUtils.FastName.FastName Predicate { get; set; }
     private Func<bool> _condition = () => false;
     private Func<Vector2> _location = () => Vector2.Zero;
     private Func<ISmartObject> _entity = () => null;
 
-    Belief(FastName predicate) => Predicate = predicate;
+    Belief(CommonUtils.FastName.FastName predicate) => Predicate = predicate;
 
     public bool Evaluate() => _condition();
 
@@ -37,7 +36,7 @@ public class Belief : ICopyable<Belief>
     {
         readonly Belief _belief;
 
-        public BeliefBuilder(FastName predicate) => _belief = new Belief(predicate);
+        public BeliefBuilder(CommonUtils.FastName.FastName predicate) => _belief = new Belief(predicate);
 
         public BeliefBuilder WithCondition(Func<bool> condition)
         {

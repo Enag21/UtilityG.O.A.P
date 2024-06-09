@@ -1,4 +1,4 @@
-
+namespace UGOAP.TestScenarios.Systems.WeatherSystem;
 
 public interface IWeatherSystem
 {

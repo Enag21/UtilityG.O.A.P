@@ -1,0 +1,53 @@
+[gd_scene load_steps=11 format=3 uid="uid://ds2mi8mfrl0rh"]
+
+[ext_resource type="Script" path="res://TestScenarios/Scenes/SmartObjects/Animal/SmartAnimal.cs" id="1_65g66"]
+[ext_resource type="Script" path="res://TestScenarios/Components/HealthComponent.cs" id="2_8p78y"]
+[ext_resource type="Texture2D" uid="uid://bky0k4r1afb3b" path="res://TestScenarios/Art/Animals/Chicken/chicken default.png" id="2_l2dyh"]
+[ext_resource type="Script" path="res://TestScenarios/Components/HitBoxComponent.cs" id="3_2kgia"]
+[ext_resource type="Script" path="res://CommonUtils/BaseStateMachine/StateMachine.cs" id="4_qdbwa"]
+[ext_resource type="Script" path="res://TestScenarios/Scenes/SmartObjects/Animal/AnimalIdleState.cs" id="5_vl1ok"]
+[ext_resource type="Script" path="res://TestScenarios/Scenes/SmartObjects/Animal/AnimalWanderState.cs" id="6_11i4h"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oqksv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuu02"]
+atlas = ExtResource("2_l2dyh")
+region = Rect2(15.7476, 346.74, 14.1597, 19.1774)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ms85l"]
+radius = 9.05539
+
+[node name="SmartAnimal" type="CharacterBody2D" node_paths=PackedStringArray("_healthComponent", "_hitBoxComponent") groups=["SmartObject"]]
+script = ExtResource("1_65g66")
+_healthComponent = NodePath("HealthComponent")
+_hitBoxComponent = NodePath("HitBoxComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_oqksv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_tuu02")
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("_hitBox")]
+script = ExtResource("2_8p78y")
+_hitBox = NodePath("../HitBoxComponent")
+
+[node name="HitBoxComponent" type="Area2D" parent="."]
+script = ExtResource("3_2kgia")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxComponent"]
+shape = SubResource("CircleShape2D_ms85l")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("Actor", "_initialState")]
+script = ExtResource("4_qdbwa")
+Actor = NodePath("..")
+_initialState = NodePath("AnimalIdleState")
+
+[node name="AnimalIdleState" type="Node" parent="StateMachine"]
+script = ExtResource("5_vl1ok")
+
+[node name="AnimalWanderState" type="Node" parent="StateMachine"]
+script = ExtResource("6_11i4h")
+_minWanderTime = 1.0
+_maxWanderTime = 5.0
+_wanderSpeed = 25.0

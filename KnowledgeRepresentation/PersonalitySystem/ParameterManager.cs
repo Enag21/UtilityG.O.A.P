@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 using Godot;
-using UGOAP.CommonUtils.FastName;
 
 namespace UGOAP.KnowledgeRepresentation.PersonalitySystem;
 
 [GlobalClass]
 public partial class ParameterManager : Node, IParameterManager
 {
-    public Dictionary<FastName, IParameter> Parameters { get; }
-    public ParameterManager() => Parameters = new Dictionary<FastName, IParameter>();
+    public Dictionary<ParameterType, IParameter> Parameters { get; }
+    public ParameterManager() => Parameters = new Dictionary<ParameterType, IParameter>();
     public ParameterManager(IParameterManager parameterManager)
     {
-        Parameters = new Dictionary<FastName, IParameter>();
+        Parameters = new Dictionary<ParameterType, IParameter>();
 
         foreach (var kvp in parameterManager.Parameters)
         {
@@ -19,16 +18,16 @@ public partial class ParameterManager : Node, IParameterManager
         }
     }
 
-    public void AddParameter(IParameter parameter) => Parameters.Add(parameter.Name, parameter);
+    public void AddParameter(IParameter parameter) => Parameters.Add(parameter.Type, parameter);
 
-    public void RemoveParameter(FastName name) => Parameters.Remove(name);
+    public void RemoveParameter(ParameterType name) => Parameters.Remove(name);
 
-    public IParameter GetParameter(FastName name) =>
+    public IParameter GetParameter(ParameterType name) =>
         Parameters.GetValueOrDefault(name);
 
     public void UpdateParameter(IParameterModifier modifier)
     {
-        var parameterToUpdate = Parameters.GetValueOrDefault(modifier.ParameterName);
+        var parameterToUpdate = Parameters.GetValueOrDefault(modifier.ParameterType);
         if (parameterToUpdate == null)
             return;
         modifier.Modify(parameterToUpdate);

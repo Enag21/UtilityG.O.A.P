@@ -5,7 +5,7 @@ using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.SmartObjects;
 
-namespace UGOAP.TestScenarion.Scenes.SmartObjects.Tree.Actions.ChopTree;
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.Tree.Actions.ChopTree;
 
 public class ChopTreeActionBuilder : IActionBuilder
 {

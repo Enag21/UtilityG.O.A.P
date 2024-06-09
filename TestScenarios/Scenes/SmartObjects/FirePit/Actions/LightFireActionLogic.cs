@@ -2,11 +2,11 @@
 using Godot;
 using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Actions;
-using UGOAP.SmartObjects;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
+using UGOAP.SmartObjects;
 
-namespace UGOAP;
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.FirePit.Actions;
 
 public partial class LightFireActionLogic : Node, IActionLogic
 {

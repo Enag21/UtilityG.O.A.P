@@ -45,6 +45,7 @@ public partial class BehaviourComponent : Node
 
     public void RequestReplanning()
     {
+        if (_currentPlan == null) return;
         var newPlan = ComputePlan();
         // We need to recompute the utility of the current plan because now there might be new desires or goals
         DecisionMakerComponent.ReComputeUtilityForPlan(_currentPlan);

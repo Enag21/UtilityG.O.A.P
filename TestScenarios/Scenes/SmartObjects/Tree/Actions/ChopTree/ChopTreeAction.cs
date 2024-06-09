@@ -3,7 +3,7 @@ using Godot;
 using UGOAP.BehaviourSystem.Actions;
 using UGOAP.SmartObjects;
 
-namespace UGOAP.TestScenarion.Scenes.SmartObjects.Tree.Actions.ChopTree;
+namespace UGOAP.TestScenarios.Scenes.SmartObjects.Tree.Actions.ChopTree;
 
 public partial class ChopTreeActionLogic : Node, IActionLogic
 {

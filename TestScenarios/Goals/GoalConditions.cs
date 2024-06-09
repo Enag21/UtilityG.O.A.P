@@ -2,7 +2,7 @@
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
-namespace UGOAP;
+namespace UGOAP.TestScenarios.Goals;
 
 public class FireLitCondition : ISatisfactionCondition
 {

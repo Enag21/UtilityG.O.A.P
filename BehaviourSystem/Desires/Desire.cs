@@ -12,18 +12,43 @@ namespace UGOAP.BehaviourSystem.Desires;
 
 public abstract partial class Desire : Node
 {
+    [Export] public Curve WeightCurve { get; private set; }
     [Export] public float Weight { get; private set; } = 1.0f;
     public event Action<Desire> DesireTriggered = delegate { };
     public FastName DesireName { get; private set; }
     public List<Goal> Goals { get; private set; } = new List<Goal>();
-    protected Dictionary<Belief, List<Func<Goal>>> triggerMapping = new Dictionary<Belief, List<Func<Goal>>>();
-    protected IAgent _agent;
+    protected List<TriggerGoalMap> Triggers = new List<TriggerGoalMap>();
+    protected IAgent Agent;
     private List<Goal> _markedForRemoval = new List<Goal>();
+
+    protected class TriggerGoalMap
+    {
+        public Belief Trigger { get; set; }
+        public List<Func<Goal>> GoalCreators { get; set; } = new List<Func<Goal>>();
+        public bool IsActive => _activeGoals.Count > 0;
+        private List<Goal> _activeGoals = new List<Goal>();
+
+        public TriggerGoalMap(Belief trigger)
+        {
+            Trigger = trigger;
+        }
+
+        public List<Goal> CreatedGoals()
+        {
+            foreach (var goal in GoalCreators)
+            {
+                var goalCreated = goal();
+                goalCreated.GoalSatisfied += () => { _activeGoals.Remove(goalCreated); };
+                _activeGoals.Add(goalCreated);
+            }
+            return _activeGoals;
+        }
+    }
 
     public override void _Ready()
     {
         DesireName = new FastName(Name);
-        _agent = GetOwner<IAgent>();
+        Agent = GetOwner<IAgent>();
         ConfigureTriggers();
     }
 
@@ -31,28 +56,27 @@ public abstract partial class Desire : Node
     {
         EvaluateTriggers();
         RemoveSatisfiedGoals();
-        Goals.ForEach(g => g.Update(_agent.State));
+        Goals.ForEach(g => g.Update(Agent.State));
     }
 
     protected virtual void EvaluateTriggers()
     {
-        foreach (var (trigger, goalsCreators) in triggerMapping)
+        var triggersToProcess = Triggers.Where(trigger => !trigger.IsActive).Where(trigger => trigger.Trigger.Evaluate()).ToList();
+        foreach (var trigger in triggersToProcess)
         {
-            if (!trigger.Evaluate()) continue;
-            foreach (var goalCreator in goalsCreators)
-            {
-                var goal = goalCreator();
-                var goalAlreadyExist = Goals.Any(g => g.Name == goal.Name);
-                if (goalAlreadyExist) continue;
-                goal.GoalSatisfied += () => { _markedForRemoval.Add(goal); };
-                Goals.Add(goal);
-            }
+            var goals = trigger.CreatedGoals();
+            goals.ForEach(goal => goal.GoalSatisfied += () => { _markedForRemoval.Add(goal); });
+            Goals.AddRange(goals);
+        }
+        if (triggersToProcess.Count > 0)
+        {
+            DesireTriggered(this);
         }
     }
 
     public float ComputeSatisfaction(IState state = null)
     {
-        IState stateToUse = state ?? _agent.State;
+        IState stateToUse = state ?? Agent.State;
         if (Goals.Count == 0)
         {
             return 1.0f;
