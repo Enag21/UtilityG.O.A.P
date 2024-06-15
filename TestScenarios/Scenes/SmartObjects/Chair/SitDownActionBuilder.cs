@@ -21,6 +21,7 @@ public partial class SitDownActionBuilder : IActionBuilder
         return new BasicAction.Builder(new FastName("SitDown"), agent, _provider)
             .WithInRangeRequired()
             .WithActionLogic(new SitDownActionLogic())
+            .WithCost(() => agent.Location.DistanceTo(_provider.Location))
             .WithStateEffect(
                 new Belief.BeliefBuilder(Facts.Predicates.IsSitting)
                     .WithCondition(() => true)

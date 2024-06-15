@@ -68,7 +68,10 @@ public partial class ActionExecutionComponent : Node, IPlanExecutioner
 
     public void StopCurrentPlan()
     {
-        StopAction();
+        if (CurrentAction != null)
+        {
+            StopAction();
+        }
         _currentPlan = null;
     }
 }

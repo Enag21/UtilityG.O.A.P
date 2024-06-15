@@ -23,7 +23,7 @@ public partial class DesireToReactToRain : Desire
         if (Agent.State.TraitManager.GetTrait(TraitType.DislikesRain) != Trait.None)
         {
             var trigger = new Belief.BeliefBuilder(new CommonUtils.FastName.FastName("IsRaining"))
-                .WithCondition(() => Systems.WeatherSystem.WeatherComponent.Instance.CurrentWeather == WeatherType.Rain).Build();
+                .WithCondition(() => TriggerCondition()).Build();
             var goal = () => new Goal.Builder(new CommonUtils.FastName.FastName("ReactToRain"))
                 .WithPriority(20.0f)
                 .WithSatisfactionCondition(new IsCoveredCondition())
@@ -34,12 +34,24 @@ public partial class DesireToReactToRain : Desire
             Triggers.Add(triggerMap);
         }
     }
+
+    private bool TriggerCondition()
+    {
+        var isRaining = WeatherComponent.Instance.CurrentWeather == WeatherType.Rain;
+        var isNotCovered = !Agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsCovered).Evaluate();
+        return isRaining && isNotCovered;
+    }
 }
 
 public class IsCoveredCondition : ISatisfactionCondition
 {
     public float GetSatisfaction(IState state)
     {
+        if (WeatherComponent.Instance.CurrentWeather == WeatherType.Normal)
+        {
+            return 1.0f;
+        }
+
         if (state.BeliefComponent.GetBelief(Facts.Predicates.IsCovered).Evaluate())
         {
             return 1.0f;

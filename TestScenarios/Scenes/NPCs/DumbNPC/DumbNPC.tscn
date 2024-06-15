@@ -1,39 +1,39 @@
-[gd_scene load_steps=22 format=3 uid="uid://1wdkeqos6dra"]
+[gd_scene load_steps=21 format=3 uid="uid://b8t4deri5kkv2"]
 
-[ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_ml0to"]
-[ext_resource type="Script" path="res://AgentComponents/MoveComponent.cs" id="2_er2qj"]
-[ext_resource type="Script" path="res://Agent/StateManager.cs" id="2_mm06a"]
-[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/Trait.cs" id="4_33s8l"]
-[ext_resource type="Script" path="res://AgentComponents/BehaviourComponent.cs" id="4_15320"]
-[ext_resource type="Script" path="res://AgentComponents/ActionExecutionComponent.cs" id="5_7sfwv"]
-[ext_resource type="Script" path="res://AgentComponents/BeliefComponent.cs" id="5_51qm6"]
-[ext_resource type="Script" path="res://AgentComponents/DesireComponent.cs" id="6_3541g"]
-[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/ParameterManager.cs" id="6_fqm83"]
-[ext_resource type="Script" path="res://AgentComponents/ActionManagerComponent.cs" id="6_grple"]
-[ext_resource type="Script" path="res://BehaviourSystem/DecisionMakers/DecisionMakerComponent.cs" id="7_gx8er"]
-[ext_resource type="Script" path="res://TestScenarios/Desires/DesireToLitTheFire.cs" id="7_o1xbp"]
-[ext_resource type="Texture2D" uid="uid://c2glk265rk24v" path="res://TestScenarios/Art/Characters/Basic Charakter Spritesheet.png" id="8_fdutg"]
-[ext_resource type="Script" path="res://TestScenarios/Desires/DesireToSitDown.cs" id="8_nut6x"]
-[ext_resource type="Script" path="res://AgentComponents/Sensors/SenseComponent.cs" id="10_om37l"]
-[ext_resource type="Script" path="res://TestScenarios/Desires/DesireToReactToRain.cs" id="11_oateb"]
-[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/TraitManager.cs" id="12_wk552"]
+[ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_cflcl"]
+[ext_resource type="Script" path="res://Agent/StateManager.cs" id="2_xnctt"]
+[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/TraitManager.cs" id="3_qbb4s"]
+[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/Trait.cs" id="4_u7r1d"]
+[ext_resource type="Script" path="res://AgentComponents/BeliefComponent.cs" id="5_r55rf"]
+[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/ParameterManager.cs" id="6_e8lom"]
+[ext_resource type="Script" path="res://AgentComponents/MoveComponent.cs" id="7_li8ll"]
+[ext_resource type="Script" path="res://AgentComponents/BehaviourComponent.cs" id="8_x6w1g"]
+[ext_resource type="Script" path="res://AgentComponents/ActionExecutionComponent.cs" id="9_5fk18"]
+[ext_resource type="Script" path="res://AgentComponents/ActionManagerComponent.cs" id="10_cduyc"]
+[ext_resource type="Script" path="res://AgentComponents/DesireComponent.cs" id="11_tvadi"]
+[ext_resource type="Script" path="res://TestScenarios/Desires/DesireToSitDown.cs" id="13_dqctq"]
+[ext_resource type="Script" path="res://TestScenarios/Desires/DesireToReactToRain.cs" id="14_qd5x6"]
+[ext_resource type="Script" path="res://BehaviourSystem/DecisionMakers/DecisionMakerComponent.cs" id="15_2bhv6"]
+[ext_resource type="Texture2D" uid="uid://c2glk265rk24v" path="res://TestScenarios/Art/Characters/Basic Charakter Spritesheet.png" id="16_6qhwk"]
+[ext_resource type="Script" path="res://AgentComponents/Sensors/SenseComponent.cs" id="17_ue4xy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hbo0f"]
 
-[sub_resource type="Resource" id="Resource_jevnc"]
-script = ExtResource("4_33s8l")
+[sub_resource type="Resource" id="Resource_1l6ay"]
+script = ExtResource("4_u7r1d")
 Type = 1
 Value = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3yifj"]
-atlas = ExtResource("8_fdutg")
+atlas = ExtResource("16_6qhwk")
 region = Rect2(13.7903, 9.18407, 21.8564, 29.3696)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g7nej"]
 radius = 68.0294
 
 [node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager")]
-script = ExtResource("1_ml0to")
+modulate = Color(0.80549, 0.370961, 0.763213, 1)
+script = ExtResource("1_cflcl")
 MoveComponent = NodePath("MoveComponent")
 BehaviourComponent = NodePath("BehaviourComponent")
 _stateManager = NodePath("StateManager")
@@ -42,62 +42,58 @@ _stateManager = NodePath("StateManager")
 shape = SubResource("CircleShape2D_hbo0f")
 
 [node name="StateManager" type="Node" parent="." node_paths=PackedStringArray("_beliefComponent", "_traitManager", "_parameterManager")]
-script = ExtResource("2_mm06a")
+script = ExtResource("2_xnctt")
 _beliefComponent = NodePath("BeliefComponent")
 _traitManager = NodePath("TraitManager")
 _parameterManager = NodePath("ParameterManager")
 
 [node name="TraitManager" type="Node" parent="StateManager"]
-script = ExtResource("12_wk552")
-Traits = Array[Object]([SubResource("Resource_jevnc")])
+script = ExtResource("3_qbb4s")
+Traits = Array[Object]([SubResource("Resource_1l6ay")])
 
 [node name="BeliefComponent" type="Node" parent="StateManager"]
-script = ExtResource("5_51qm6")
+script = ExtResource("5_r55rf")
 
 [node name="ParameterManager" type="Node" parent="StateManager"]
-script = ExtResource("6_fqm83")
+script = ExtResource("6_e8lom")
 
 [node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("Actor")]
-script = ExtResource("2_er2qj")
+script = ExtResource("7_li8ll")
 Actor = NodePath("..")
 
 [node name="BehaviourComponent" type="Node" parent="." node_paths=PackedStringArray("DesireComponentNode", "ActionManagerComponentNode", "PlanExecutionerComponentNode", "DecisionMakerComponentNode")]
-script = ExtResource("4_15320")
+script = ExtResource("8_x6w1g")
 DesireComponentNode = NodePath("../DesireComponent")
 ActionManagerComponentNode = NodePath("../ActionManagerComponent")
 PlanExecutionerComponentNode = NodePath("../ActionExecutionComponent")
 DecisionMakerComponentNode = NodePath("../DecisionMakerComponent")
 
 [node name="ActionExecutionComponent" type="Node" parent="."]
-script = ExtResource("5_7sfwv")
+script = ExtResource("9_5fk18")
 
 [node name="ActionManagerComponent" type="Node" parent="."]
-script = ExtResource("6_grple")
+script = ExtResource("10_cduyc")
 
 [node name="DesireComponent" type="Node" parent="." node_paths=PackedStringArray("BehaviourComponent")]
-script = ExtResource("6_3541g")
+script = ExtResource("11_tvadi")
 BehaviourComponent = NodePath("../BehaviourComponent")
 
-[node name="DesireToLitTheFire" type="Node" parent="DesireComponent"]
-script = ExtResource("7_o1xbp")
-Weight = 5.0
-
 [node name="DesireToSitDown" type="Node" parent="DesireComponent"]
-script = ExtResource("8_nut6x")
+script = ExtResource("13_dqctq")
 
 [node name="DesireToReactToRain" type="Node" parent="DesireComponent"]
-script = ExtResource("11_oateb")
+script = ExtResource("14_qd5x6")
 Weight = 50.0
 
 [node name="DecisionMakerComponent" type="Node" parent="." node_paths=PackedStringArray("DesireComponent")]
-script = ExtResource("7_gx8er")
+script = ExtResource("15_2bhv6")
 DesireComponent = NodePath("../DesireComponent")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_3yifj")
 
 [node name="SenseComponent" type="Area2D" parent="."]
-script = ExtResource("10_om37l")
+script = ExtResource("17_ue4xy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SenseComponent"]
 shape = SubResource("CircleShape2D_g7nej")
