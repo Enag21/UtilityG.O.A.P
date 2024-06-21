@@ -1,5 +1,6 @@
 using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Actions;
+using UGOAP.BehaviourSystem.Planners;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
@@ -14,11 +15,10 @@ public class GoInsideHouseActionBuilder : IActionBuilder
 
     public IAction Build(IAgent agent)
     {
-        var action = new BasicAction.Builder(new FastName("GoInsideHouse"), agent, _smartHouse)
+        var action = new ActionBuilder<InRangeAction>(new FastName("GoInsideHouse"), new GoInsideHouseActionLogic(_smartHouse, agent) ,_smartHouse, agent)
             .WithCost(() => agent.Location.DistanceTo(_smartHouse.Location))
-            .WithActionLogic(new GoInsideHouseActionLogic(_smartHouse, agent))
-            .WithStateEffect(new Belief.BeliefBuilder(Facts.Predicates.IsCovered).WithCondition(() => true).Build())
-            .Build();
+            .WithEffect(new BeliefEffect(Facts.Predicates.IsCovered, () => false))
+            .BuildAction();
         return action;
     }
 }

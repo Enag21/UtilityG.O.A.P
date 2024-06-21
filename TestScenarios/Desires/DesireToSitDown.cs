@@ -2,6 +2,7 @@ using Godot;
 using UGOAP.BehaviourSystem.Desires;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.BehaviourSystem.Goals.SatisfactionConditions;
+using UGOAP.BehaviourSystem.Planners;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
@@ -14,16 +15,17 @@ public partial class DesireToSitDown : Desire
 {
     protected override void ConfigureTriggers()
     {
-        var trigger = new Belief.BeliefBuilder(new FastName("NotSitting"))
-            .WithCondition(() => Agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsSitting).Evaluate() == false).Build();
         var goal = () => new Goal.Builder(new FastName("SitDown"))
             .WithSatisfactionCondition(new SitDownCondition())
             .WithPriority(1.0f)
-            .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.IsSitting).WithCondition(() => true).Build())
+            .WithDesiredEffect(new BeliefEffect(Facts.Predicates.IsSitting, () => true))
             .Build();
-        var triggerMap = new TriggerGoalMap(trigger);
-        triggerMap.GoalCreators.Add(goal);
-        Triggers.Add(triggerMap);
+        var trigger = new Trigger.Builder()
+            .WithCondition(() => Agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsSitting).Evaluate() == false)
+            .WithCondition(() => Agent.GoalDriver.ActiveGoals.Count == 0)
+            .WithGoalCreator(goal)
+            .Build();
+        Triggers.Add(trigger);
     }
 }
 

@@ -2,6 +2,7 @@
 using Godot;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
+using UGOAP.SmartObjects;
 
 namespace UGOAP.AgentComponents;
 
@@ -20,8 +21,6 @@ public partial class BeliefComponent : Node, IBeliefComponent
         var currentResult = GetBelief(belief.Predicate)?.Evaluate();
 
         Beliefs[belief.Predicate] = belief;
-
-        GD.Print($"Updated belief {belief.Predicate} from {currentResult} to {Beliefs[belief.Predicate].Evaluate()}");
     }
 
     public void RemoveBelief(FastName predicate) => Beliefs.Remove(predicate);
@@ -44,6 +43,31 @@ public partial class BeliefComponent : Node, IBeliefComponent
             return newBelief;
         }
         return belief;
+    }
+
+    public Belief GetBeliefAboutEntity(IEntity entity)
+    {
+        foreach (var (_, belief) in Beliefs)
+        {
+            if (belief.EntityFluent?.Entity == entity)
+            {
+                return belief;
+            }
+        }
+        return null;
+    }
+
+    public List<Belief> GetSpecificEntityBeliefs<T>() where T : class
+    {
+        var result = new List<Belief>();
+        foreach (var (_, belief) in Beliefs)
+        {
+            if (belief.EntityFluent?.Entity is T entity)
+            {
+                result.Add(belief);
+            }
+        }
+        return result;
     }
 
     public IBeliefComponent Copy()

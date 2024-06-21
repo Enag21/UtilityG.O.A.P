@@ -11,52 +11,24 @@ namespace UGOAP.BehaviourSystem.Actions;
 
 public abstract partial class ActionBase : Node, IAction
 {
-    public abstract event Action ActionFinished;
-    public CommonUtils.FastName.FastName ActionName { get; protected set; }
-    public ISmartObject Provider { get; protected set; }
-    public float Cost => CostFunction();
-    public List<IParameterModifier> ParameterModifiers { get; protected set; } =
-        new List<IParameterModifier>();
-    public Effects Effects { get; protected set; } = new Effects();
-    public Preconditions Preconditions { get; protected set; } = new Preconditions();
-    protected Func<float> CostFunction = () => 1.0f;
-    protected IActionLogic ActionLogic;
-    protected readonly IAgent Agent;
-    protected bool RequiresInRange = false;
-    private bool _inRange = false;
+    public abstract IActionLogic ActionLogic { get; set; }
+    public abstract IActionState ActionState { get; set; }
+    public event Action ActionFinished;
 
-    protected ActionBase(CommonUtils.FastName.FastName actionName, IAgent state, ISmartObject provider)
+    public override void _EnterTree()
     {
-        this.Agent = state;
-        ActionName = actionName;
-        Provider = provider;
+        AddChild(ActionLogic as Node);
+        ActionLogic.LogicFinished += OnLogicFinished;
+        ActionLogic.LogicFailed += () => ActionFinished?.Invoke();
     }
 
-    protected virtual void ApplyEffects(IState state)
-    {
-        Effects.ApplyEffects(state);
-        ParameterModifiers.ForEach(modifier =>
-            modifier.Modify(state.ParameterManager.GetParameter(modifier.ParameterType))
-        );
-    }
+    public abstract void Start();
+    public abstract void Stop();
+    public abstract void Update(float delta);
 
-    public virtual void Start()
+    private void OnLogicFinished()
     {
-        if (RequiresInRange && !Agent.State.BeliefComponent.GetBelief(new CommonUtils.FastName.FastName($"At {Provider.Id}")).Evaluate())
-        {
-            _inRange = false;
-            Agent.NavigationComponent.SetDestination(Provider.Location);
-            Agent.NavigationComponent.NavigationFinished += () => { ActionLogic.Start(); _inRange = true; };
-            return;
-        }
-        ActionLogic.Start();
-    }
-
-    public virtual void Stop() => ActionLogic.Stop();
-
-    public virtual void Update(float delta)
-    {
-        if (RequiresInRange && !_inRange) return;
-        ActionLogic.Update(delta);
+        ActionState.ApplyEffects();
+        ActionFinished?.Invoke();
     }
 }

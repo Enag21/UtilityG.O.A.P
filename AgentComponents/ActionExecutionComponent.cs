@@ -47,14 +47,14 @@ public partial class ActionExecutionComponent : Node, IPlanExecutioner
             return;
         }
         CurrentAction = _currentPlan.Actions.Dequeue();
-        GD.Print($"Action Loaded: {CurrentAction.ActionName.ToString()}");
+        GD.Print($"Action Loaded: {CurrentAction.ActionState.ActionName}");
         CurrentAction.ActionFinished += OnActionFinished;
         CurrentAction.Start();
     }
 
     private void OnActionFinished()
     {
-        GD.Print($"Action Finished: {CurrentAction.ActionName.ToString()}");
+        GD.Print($"Action Finished: {CurrentAction.ActionState.ActionName}");
         StopAction();
         LoadAction();
     }

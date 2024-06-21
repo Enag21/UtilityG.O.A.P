@@ -65,6 +65,8 @@ animation = &"Lit"
 frame_progress = 0.527891
 
 [node name="SensableComponent" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("3_dw56m")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SensableComponent"]

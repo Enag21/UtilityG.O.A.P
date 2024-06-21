@@ -7,6 +7,7 @@
 size = Vector2(79, 77)
 
 [node name="SmartHouse" type="Area2D" groups=["SmartObject"]]
+collision_layer = 2
 script = ExtResource("1_cehob")
 
 [node name="House" parent="." instance=ExtResource("2_xad0y")]

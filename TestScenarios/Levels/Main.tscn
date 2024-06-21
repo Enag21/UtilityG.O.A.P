@@ -57,21 +57,20 @@ position = Vector2(372, 190)
 SensableComponent = NodePath("SensableComponent")
 
 [node name="Chair" parent="SmartObjects" instance=ExtResource("6_687iv")]
-position = Vector2(389, 178)
+position = Vector2(404, 162)
 
 [node name="Chair2" parent="SmartObjects" instance=ExtResource("6_687iv")]
 position = Vector2(541, 215)
 
 [node name="SmartHouse" parent="SmartObjects" instance=ExtResource("9_mh063")]
-position = Vector2(67, 91)
+position = Vector2(52, 45)
 
-[node name="SmartAnimal" parent="SmartObjects" node_paths=PackedStringArray("_healthComponent", "_hitBoxComponent") instance=ExtResource("9_mophx")]
-position = Vector2(540, 99)
-_healthComponent = NodePath("HealthComponent")
-_hitBoxComponent = NodePath("HitBoxComponent")
+[node name="SmartAnimal" parent="SmartObjects" instance=ExtResource("9_mophx")]
+position = Vector2(321, 244)
 
-[node name="BasicNpc2" parent="." node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager") instance=ExtResource("11_j6r3k")]
-position = Vector2(91, 224)
+[node name="BasicNpc2" parent="." node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager", "_desireComponent") instance=ExtResource("11_j6r3k")]
+position = Vector2(119, 240)
 MoveComponent = NodePath("MoveComponent")
 BehaviourComponent = NodePath("BehaviourComponent")
 _stateManager = NodePath("StateManager")
+_desireComponent = NodePath("DesireComponent")

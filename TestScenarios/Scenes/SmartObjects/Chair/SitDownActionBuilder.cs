@@ -1,5 +1,6 @@
 using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Actions;
+using UGOAP.BehaviourSystem.Planners;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
@@ -18,15 +19,11 @@ public partial class SitDownActionBuilder : IActionBuilder
 
     public IAction Build(IAgent agent)
     {
-        return new BasicAction.Builder(new FastName("SitDown"), agent, _provider)
-            .WithInRangeRequired()
-            .WithActionLogic(new SitDownActionLogic())
+        return new ActionBuilder<InRangeAction>(new FastName("SitDown"), new SitDownActionLogic(_provider, agent), _provider, agent)
             .WithCost(() => agent.Location.DistanceTo(_provider.Location))
-            .WithStateEffect(
-                new Belief.BeliefBuilder(Facts.Predicates.IsSitting)
-                    .WithCondition(() => true)
-                    .Build()
+            .WithEffect(
+                new BeliefEffect(Facts.Predicates.IsSitting, () => true)
             )
-            .Build();
+            .BuildAction();
     }
 }

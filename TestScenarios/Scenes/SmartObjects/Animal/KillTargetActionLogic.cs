@@ -7,20 +7,17 @@ namespace UGOAP.TestScenarios.Scenes.SmartObjects.Animal;
 public partial class KillTargetActionLogic : IActionLogic
 {
     public event Action LogicFinished;
-    private readonly IDamagable _target;
-    private readonly Components.HealthComponent _targetHealthComponent;
-    private readonly Components.HurtBoxComponent _damageBoxComponent;
+    public event Action LogicFailed;
 
-    public KillTargetActionLogic(IDamagable damagable, Components.HealthComponent healthComponent, Components.HurtBoxComponent damageBoxComponent)
+    private readonly IDamagable _target;
+
+    public KillTargetActionLogic(IDamagable damagable, HealthComponent healthComponent, HurtBoxComponent damageBoxComponent)
     {
         _target = damagable;
-        _targetHealthComponent = healthComponent;
-        _damageBoxComponent = damageBoxComponent;
     }
 
     public void Start()
     {
-        _targetHealthComponent.HealthDepleted += () => LogicFinished?.Invoke();
     }
 
     public void Stop()
@@ -30,6 +27,5 @@ public partial class KillTargetActionLogic : IActionLogic
 
     public void Update(float delta)
     {
-        _target.Damage(_damageBoxComponent.Attack);
     }
 }

@@ -22,18 +22,6 @@ public interface IPlanNode
     bool IsFulfilled();
     int GetUnfulfilledConditionsCount();
 }
-public record PlanNode(IPlanNode Parent, IAction Action, Effects RequiredEffects, float Cost) : IPlanNode
-{
-    public int GetUnfulfilledConditionsCount()
-    {
-        return RequiredEffects.Count;
-    }
-
-    public bool IsFulfilled()
-    {
-        return RequiredEffects.Count == 0;
-    }
-}
 
 public record StatePlanNode(IPlanNode Parent, IAction Action, IState State, float Cost) : IPlanNode
 {

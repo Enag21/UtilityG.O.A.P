@@ -1,6 +1,7 @@
 ﻿using Godot;
 using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Actions;
+using UGOAP.BehaviourSystem.Planners;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
@@ -15,13 +16,11 @@ public partial class LightFireActionBuilder : Node, IActionBuilder
 
     public IAction Build(IAgent agent)
     {
-        var action = new BasicAction.Builder(new FastName("LightFire"), agent, _smartObject)
-            .WithInRangeRequired()
+        var action = new ActionBuilder<InRangeAction>(new FastName("LightFire"), new LightFireActionLogic(_smartObject, agent), _smartObject, agent)
             .WithCost(() => agent.Location.DistanceTo(_smartObject.Location))
-            .WithActionLogic(new LightFireActionLogic(_smartObject, agent))
-            .WithStateEffect(new Belief.BeliefBuilder(Facts.Predicates.FireIsLit).WithCondition(() => true).Build())
-            .WithStatePrecondition(new Belief.BeliefBuilder(Facts.Preconditions.HasWood).WithCondition(() => true).Build())
-            .Build();
+            .WithEffect(new BeliefEffect(Facts.Predicates.FireIsLit, () => true))
+            .WithPrecondition(new Belief.BeliefBuilder(Facts.Preconditions.HasWood).WithCondition(() => true).Build())
+            .BuildAction();
         return action;
     }
 }

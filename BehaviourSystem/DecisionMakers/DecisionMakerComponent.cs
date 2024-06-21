@@ -13,14 +13,14 @@ public partial class DecisionMakerComponent : Node, IDecisionMaker
 {
     [Export]
     public DesireComponent DesireComponent { get; set; }
-    private IUtilityRater _utilityRater;
+    public IUtilityRater UtilityRater { get; private set; }
     private IState _state;
     private List<Plan> _planList = new List<Plan>();
     private List<Plan> _markedForSimulation = new List<Plan>();
 
     public override void _Ready()
     {
-        _utilityRater = new DesireUtilityRater(DesireComponent.Desires);
+        UtilityRater = new DesireUtilityRater(DesireComponent.Desires);
         _state = GetOwner<IAgent>().State;
     }
 
@@ -30,13 +30,13 @@ public partial class DecisionMakerComponent : Node, IDecisionMaker
         _planList = plans.ToList();
         SimulatePlans();
         RatePlans();
-        _planList.OrderByDescending(plan => plan.Utility);
-        return _planList.FirstOrDefault();
+        var bestPlan = GetBestPlan();
+        return bestPlan;
     }
 
     public void ReComputeUtilityForPlan(Plan plan)
     {
-        var newUtility = _utilityRater.RateUtility(plan.State);
+        var newUtility = UtilityRater.RateUtility(plan.State);
         plan.SetUtility(newUtility);
     }
 
@@ -63,8 +63,35 @@ public partial class DecisionMakerComponent : Node, IDecisionMaker
     {
         foreach (var plan in _planList)
         {
-            var utility = _utilityRater.RateUtility(plan.State);
+            var utility = UtilityRater.RateUtility(plan.State);
             plan.SetUtility(utility);
         }
+    }
+
+    private Plan GetBestPlan()
+    {
+        var maxUtility = _planList[0].Utility;
+        var bestPlan = _planList[0];
+        foreach (var plan in _planList)
+        {
+            PrintPlan(plan);
+            if (plan.Utility > maxUtility)
+            {
+                maxUtility = plan.Utility;
+                bestPlan = plan;
+            }
+        }
+        return bestPlan;
+    }
+
+    private void PrintPlan(Plan plan)
+    {
+        GD.Print($"Plan \n -Actions: {plan.Actions.Count} \n");
+        foreach (var action in plan.Actions)
+        {
+            GD.Print($" -{action.ActionState.ActionName} \n");
+        }
+        GD.Print($" -Utility: {plan.Utility}");
+
     }
 }

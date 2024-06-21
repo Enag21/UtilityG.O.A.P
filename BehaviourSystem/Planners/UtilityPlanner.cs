@@ -1,25 +1,25 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using UGOAP.BehaviourSystem.Actions;
+using UGOAP.BehaviourSystem.DecisionMakers;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 
 namespace UGOAP.BehaviourSystem.Planners;
 
-public class AStarPlanner : BasePlanner
+public class UtilityPlanner : BasePlanner
 {
+    private readonly IUtilityRater _utilityRater;
     private readonly IHeuristic _heuristic;
-
-    public AStarPlanner(IHeuristic heuristic) => _heuristic = heuristic;
-
+    public UtilityPlanner(IUtilityRater utilityRater, IHeuristic heuristic) => (_utilityRater, _heuristic) = (utilityRater, heuristic);
     public override Plan ComputePlan(HashSet<IAction> actions, Goal goal) => new Plan(new Queue<IAction>(), 0.0f);
+
     public override Plan ComputePlan(HashSet<IAction> actions, Goal goal, IState currentState)
     {
         var goalState = new State(goal.DesiredEffects);
         var originalState = currentState.Copy();
-        if (IsGoalStateFulfilled(goalState, originalState))
+        if (goal.GetSatisfaction(currentState) >= 0.95f)
         {
             return new Plan(new Queue<IAction>(), 0.0f);
         }
@@ -36,7 +36,7 @@ public class AStarPlanner : BasePlanner
             var currentNode = openSet.Dequeue() as StatePlanNode;
             closedSet.Add(currentNode);
 
-            if (currentNode.IsFulfilled())
+            if (goal.GetSatisfaction(currentNode.State) >= 0.99f)
             {
                 return ReconstructPath(currentNode);
             }
@@ -44,38 +44,31 @@ public class AStarPlanner : BasePlanner
             var availableActions = new HashSet<IAction>(actions).OrderBy(a => a.ActionState.Cost());
             foreach (var action in availableActions)
             {
-                if (action.ActionState.Effects.Any(e => e.FulfillsAnyRequiredEffects(currentNode.State)))
+                if (!PreconditionsMet(action, currentNode.State)) continue;
+                var newState = currentNode.State.Copy();
+                action.ActionState.Effects.ForEach(effect => effect.ApplyEffect(newState));
+                AddPreconditionsToState(newState, action);
+                CompareAndUpdateStateWith(newState, originalState);
+                var newNode = new StatePlanNode(currentNode, action, newState, currentNode.Cost + action.ActionState.Cost());
+                if (!closedSet.Contains(newNode))
                 {
-                    var newState = currentNode.State.Copy();
-                    action.ActionState.Effects.ForEach(e => e.ApplyEffect(newState));
-                    AddPreconditionsToState(newState, action);
-                    CompareAndUpdateStateWith(newState, originalState);
-                    var newNode = new StatePlanNode(currentNode, action, newState, currentNode.Cost + action.ActionState.Cost());
-                    if (!closedSet.Contains(newNode))
-                    {
-                        openSet.Enqueue(newNode, newNode.Cost + _heuristic.Compute(newNode));
-                    }
+                    openSet.Enqueue(newNode, -goal.GetSatisfaction(newNode.State));
                 }
-
             }
         }
         GD.Print("No plan found");
         return new Plan(new Queue<IAction>(), 0.0f);
     }
 
-    private bool IsGoalStateFulfilled(IState goalState, IState currentState)
+    private bool PreconditionsMet(IAction action, IState state)
     {
-        foreach (var (predicate, belief) in goalState.BeliefComponent.Beliefs)
+        foreach (var precondition in action.ActionState.Preconditions)
         {
-            var currentBelief = currentState.BeliefComponent.GetBelief(predicate).Evaluate();
-            var newBelief = goalState.BeliefComponent.GetBelief(predicate).Evaluate();
-            var beliefsDontAgree = currentBelief != newBelief;
-            if (beliefsDontAgree)
+            if (state.BeliefComponent.GetBelief(precondition.Predicate).Evaluate() != precondition.Evaluate())
             {
                 return false;
             }
         }
         return true;
     }
-
 }

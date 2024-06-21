@@ -1,6 +1,7 @@
 ﻿using Godot;
 using UGOAP.BehaviourSystem.Desires;
 using UGOAP.BehaviourSystem.Goals;
+using UGOAP.BehaviourSystem.Planners;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.SmartObjects;
@@ -40,16 +41,16 @@ public partial class DesireToLitTheFire : Desire
             .WithCondition(() => _firePit.IsLit == true)
             .Build();
         Agent.State.BeliefComponent.AddBelief(fireLitBelief);
-        var trigger = new Belief.BeliefBuilder(Facts.Predicates.FireIsNotLit)
-            .WithCondition(() => _firePit.IsLit == false)
-            .Build();
         var goal = () => new Goal.Builder(Facts.Goals.LitFire)
             .WithSatisfactionCondition(new FireLitCondition())
             .WithPriority(10.0f)
-            .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.FireIsLit).WithCondition(() => true).Build())
+            .WithDesiredEffect(new BeliefEffect(Facts.Predicates.FireIsLit, () => true))
             .Build();
-        var triggerMap = new TriggerGoalMap(trigger);
-        triggerMap.GoalCreators.Add(goal);
-        Triggers.Add(triggerMap);
+        var trigger = new Trigger.Builder()
+            .WithCondition(() => _firePit.IsLit == false)
+            .WithGoalCreator(goal)
+            .Build();
+        Triggers.Add(trigger);
+
     }
 }

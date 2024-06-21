@@ -1,13 +1,12 @@
 using Godot;
+using UGOAP.KnowledgeRepresentation.BeliefSystem;
 
 namespace UGOAP.TestScenarios.Scripts;
 
-public partial class Attack : Node
+[GlobalClass]
+public partial class Attack : Resource
 {
-    public float Damage { get; set; }
-
-    public Attack(float damage)
-    {
-        Damage = damage;
-    }
+    [Export] public float Damage { get; set; }
+    [Export]public float CoolDown { get; set; }
+    public IEntity Owner { get; set; }
 }

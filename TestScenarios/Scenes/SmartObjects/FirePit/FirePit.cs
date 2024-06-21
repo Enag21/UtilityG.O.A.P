@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Godot;
+using UGOAP.AgentComponents.Sensors;
 using UGOAP.BehaviourSystem.Actions;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
@@ -11,7 +12,7 @@ namespace UGOAP.TestScenarios.Scenes.SmartObjects.FirePit;
 [GlobalClass]
 public partial class FirePit : Node2D, ISmartObject
 {
-    [Export] public AgentComponents.Sensors.SensableComponent SensableComponent { get; private set; }
+    [Export] public SensableComponent SensableComponent { get; private set; }
     public FastName Id { get; private set; }
     public Vector2 Location => GlobalPosition;
     public HashSet<IActionBuilder> SuppliedActionBuilders { get; } = new();

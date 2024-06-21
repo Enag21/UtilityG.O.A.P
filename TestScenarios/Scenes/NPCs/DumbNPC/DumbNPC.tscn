@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b8t4deri5kkv2"]
+[gd_scene load_steps=25 format=3 uid="uid://b8t4deri5kkv2"]
 
 [ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_cflcl"]
 [ext_resource type="Script" path="res://Agent/StateManager.cs" id="2_xnctt"]
@@ -12,10 +12,13 @@
 [ext_resource type="Script" path="res://AgentComponents/ActionManagerComponent.cs" id="10_cduyc"]
 [ext_resource type="Script" path="res://AgentComponents/DesireComponent.cs" id="11_tvadi"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToSitDown.cs" id="13_dqctq"]
+[ext_resource type="Script" path="res://TestScenarios/Desires/DesireToEat.cs" id="13_ukmvl"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToReactToRain.cs" id="14_qd5x6"]
 [ext_resource type="Script" path="res://BehaviourSystem/DecisionMakers/DecisionMakerComponent.cs" id="15_2bhv6"]
 [ext_resource type="Texture2D" uid="uid://c2glk265rk24v" path="res://TestScenarios/Art/Characters/Basic Charakter Spritesheet.png" id="16_6qhwk"]
-[ext_resource type="Script" path="res://AgentComponents/Sensors/SenseComponent.cs" id="17_ue4xy"]
+[ext_resource type="Script" path="res://AgentComponents/Sensors/BeliefSenseComponent.cs" id="17_ue4xy"]
+[ext_resource type="PackedScene" uid="uid://bksxtr1y5aevp" path="res://TestScenarios/Scenes/SmartObjects/Weapon/BasicSmartWeapon.tscn" id="18_40rya"]
+[ext_resource type="Script" path="res://AgentComponents/Sensors/TargetSenseComponent.cs" id="19_yjd3v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hbo0f"]
 
@@ -28,15 +31,20 @@ Value = 1.0
 atlas = ExtResource("16_6qhwk")
 region = Rect2(13.7903, 9.18407, 21.8564, 29.3696)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_g7nej"]
-radius = 68.0294
+[sub_resource type="CircleShape2D" id="CircleShape2D_y5d7v"]
+radius = 93.1933
 
-[node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_4jsrf"]
+radius = 186.003
+
+[node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager", "_desireComponent")]
 modulate = Color(0.80549, 0.370961, 0.763213, 1)
+collision_mask = 0
 script = ExtResource("1_cflcl")
 MoveComponent = NodePath("MoveComponent")
 BehaviourComponent = NodePath("BehaviourComponent")
 _stateManager = NodePath("StateManager")
+_desireComponent = NodePath("DesireComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hbo0f")
@@ -61,13 +69,6 @@ script = ExtResource("6_e8lom")
 script = ExtResource("7_li8ll")
 Actor = NodePath("..")
 
-[node name="BehaviourComponent" type="Node" parent="." node_paths=PackedStringArray("DesireComponentNode", "ActionManagerComponentNode", "PlanExecutionerComponentNode", "DecisionMakerComponentNode")]
-script = ExtResource("8_x6w1g")
-DesireComponentNode = NodePath("../DesireComponent")
-ActionManagerComponentNode = NodePath("../ActionManagerComponent")
-PlanExecutionerComponentNode = NodePath("../ActionExecutionComponent")
-DecisionMakerComponentNode = NodePath("../DecisionMakerComponent")
-
 [node name="ActionExecutionComponent" type="Node" parent="."]
 script = ExtResource("9_5fk18")
 
@@ -85,15 +86,42 @@ script = ExtResource("13_dqctq")
 script = ExtResource("14_qd5x6")
 Weight = 50.0
 
+[node name="DesireToEat" type="Node" parent="DesireComponent"]
+script = ExtResource("13_ukmvl")
+Weight = 25.0
+
 [node name="DecisionMakerComponent" type="Node" parent="." node_paths=PackedStringArray("DesireComponent")]
 script = ExtResource("15_2bhv6")
 DesireComponent = NodePath("../DesireComponent")
 
+[node name="BehaviourComponent" type="Node" parent="." node_paths=PackedStringArray("DesireComponentNode", "ActionManagerComponentNode", "PlanExecutionerComponentNode", "DecisionMakerComponentNode")]
+script = ExtResource("8_x6w1g")
+DesireComponentNode = NodePath("../DesireComponent")
+ActionManagerComponentNode = NodePath("../ActionManagerComponent")
+PlanExecutionerComponentNode = NodePath("../ActionExecutionComponent")
+DecisionMakerComponentNode = NodePath("../DecisionMakerComponent")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_3yifj")
 
-[node name="SenseComponent" type="Area2D" parent="."]
+[node name="BeliefSenseComponent" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("17_ue4xy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SenseComponent"]
-shape = SubResource("CircleShape2D_g7nej")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BeliefSenseComponent"]
+shape = SubResource("CircleShape2D_y5d7v")
+
+[node name="TargetSenseComponent" type="Area2D" parent="." node_paths=PackedStringArray("_weapon")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("19_yjd3v")
+_weapon = NodePath("../BasicSmartWeapon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetSenseComponent"]
+shape = SubResource("CircleShape2D_4jsrf")
+
+[node name="BasicSmartWeapon" parent="." node_paths=PackedStringArray("Agent", "ActionManager") instance=ExtResource("18_40rya")]
+position = Vector2(8, 2)
+Agent = NodePath("..")
+ActionManager = NodePath("../ActionManagerComponent")

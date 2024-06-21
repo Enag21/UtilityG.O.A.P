@@ -1,14 +1,11 @@
+using System;
 using Godot;
+using UGOAP.CommonUtils.FastName;
 
 namespace UGOAP.TestScenarios.Components;
 
 [GlobalClass]
-public partial class HitBoxComponent : Area2D, IDamagable
+public partial class HitBoxComponent : Area2D
 {
-    [Signal] public delegate void DamagedEventHandler(Scripts.Attack attack);
 
-    public void Damage(Scripts.Attack attack)
-    {
-        EmitSignal(SignalName.Damaged, attack);
-    }
 }

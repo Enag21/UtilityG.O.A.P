@@ -35,6 +35,11 @@ project/assembly_name="UGOAP"
 
 SmartObject=""
 
+[layer_names]
+
+2d_physics/layer_1="Agents"
+2d_physics/layer_2="SmartObjects"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

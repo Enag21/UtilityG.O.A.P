@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using Godot;
 using UGOAP.Agent;
 using UGOAP.AgentComponents.Interfaces;
@@ -6,9 +7,9 @@ using UGOAP.AgentComponents.Interfaces;
 namespace UGOAP.AgentComponents.Sensors;
 
 [GlobalClass]
-public partial class SenseComponent : Area2D, ISensor
+public abstract partial class SenseComponentBase : Area2D, ISensor
 {
-    private IAgent _agent;
+    protected IAgent _agent;
     private List<ISensable> _sensables = new List<ISensable>();
     private List<ISensable> _markedForRemoval = new List<ISensable>();
     private Timer _updateTimer = new Timer() { OneShot = false, WaitTime = 1.0f, Autostart = true };
@@ -17,22 +18,33 @@ public partial class SenseComponent : Area2D, ISensor
     {
         _agent = GetOwner<IAgent>();
         AddChild(_updateTimer);
-        _updateTimer.Timeout += () => {
+        _updateTimer.Timeout += () =>
+        {
             RemoveMarkedForRemovalSensables();
             foreach (var sensable in _sensables)
             {
-                UpdateBeliefs(sensable);
+                Update(sensable);
             }
         };
         AreaEntered += OnAreaEntered;
         AreaExited += OnAreaExited;
+        BodyEntered += OnBodyEntered;
+        BodyExited += OnBodyExited;
     }
 
-    public void UpdateBeliefs(ISensable sensable)
+    private void OnBodyExited(Node2D body)
     {
-        foreach (var (_, belief) in sensable.BeliefComponent.Beliefs)
+        if (body is ISensable sensable)
         {
-            _agent.State.BeliefComponent.UpdateBelief(belief);
+            _markedForRemoval.Add(sensable);
+        }
+    }
+
+    private void OnBodyEntered(Node2D body)
+    {
+        if (body is ISensable sensable)
+        {
+            _sensables.Add(sensable);
         }
     }
 
@@ -61,4 +73,6 @@ public partial class SenseComponent : Area2D, ISensor
         }
         _markedForRemoval.Clear();
     }
+
+    public abstract void Update(ISensable sensable);
 }

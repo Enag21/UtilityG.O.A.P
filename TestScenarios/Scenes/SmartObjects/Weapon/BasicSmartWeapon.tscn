@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://bksxtr1y5aevp"]
+
+[ext_resource type="Script" path="res://TestScenarios/Scenes/SmartObjects/Weapon/SmartWeapon.cs" id="1_w6tkw"]
+[ext_resource type="Script" path="res://TestScenarios/Scripts/Attack.cs" id="2_jdaso"]
+[ext_resource type="Texture2D" uid="uid://b17jsixthfh42" path="res://TestScenarios/Art/Objects/Items/tools and meterials.png" id="2_martf"]
+
+[sub_resource type="Resource" id="Resource_egfk8"]
+script = ExtResource("2_jdaso")
+Damage = 20.0
+CoolDown = 2.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_apcxo"]
+atlas = ExtResource("2_martf")
+region = Rect2(16.9526, 0, 16.3222, 16.5149)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lej2g"]
+radius = 5.0
+
+[node name="BasicSmartWeapon" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_w6tkw")
+Attack = SubResource("Resource_egfk8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_apcxo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lej2g")

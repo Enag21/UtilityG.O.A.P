@@ -14,7 +14,7 @@
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToLitTheFire.cs" id="7_o1xbp"]
 [ext_resource type="Texture2D" uid="uid://c2glk265rk24v" path="res://TestScenarios/Art/Characters/Basic Charakter Spritesheet.png" id="8_fdutg"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToSitDown.cs" id="8_nut6x"]
-[ext_resource type="Script" path="res://AgentComponents/Sensors/SenseComponent.cs" id="10_om37l"]
+[ext_resource type="Script" path="res://AgentComponents/Sensors/BeliefSenseComponent.cs" id="10_om37l"]
 [ext_resource type="Script" path="res://TestScenarios/Desires/DesireToReactToRain.cs" id="11_oateb"]
 [ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/TraitManager.cs" id="12_wk552"]
 
@@ -32,11 +32,12 @@ region = Rect2(13.7903, 9.18407, 21.8564, 29.3696)
 [sub_resource type="CircleShape2D" id="CircleShape2D_g7nej"]
 radius = 68.0294
 
-[node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager")]
+[node name="BasicNpc" type="CharacterBody2D" node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager", "_desireComponent")]
 script = ExtResource("1_ml0to")
 MoveComponent = NodePath("MoveComponent")
 BehaviourComponent = NodePath("BehaviourComponent")
 _stateManager = NodePath("StateManager")
+_desireComponent = NodePath("DesireComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hbo0f")

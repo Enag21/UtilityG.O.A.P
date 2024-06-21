@@ -1,5 +1,6 @@
 ﻿using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Actions;
+using UGOAP.BehaviourSystem.Planners;
 using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
@@ -15,12 +16,10 @@ public class ChopTreeActionBuilder : IActionBuilder
 
     public IAction Build(IAgent agent)
     {
-        var action = new BasicAction.Builder(new FastName("ChopTree"), agent, _smartObject)
-            .WithInRangeRequired()
+        var action = new ActionBuilder<InRangeAction>(new FastName("ChopTree"), new ChopTreeActionLogic(_smartObject), _smartObject, agent)
             .WithCost(() => agent.Location.DistanceTo(_smartObject.Location))
-            .WithActionLogic(new ChopTreeActionLogic(_smartObject))
-            .WithStateEffect(new Belief.BeliefBuilder(Facts.Effects.HasWood).WithCondition(() => true).Build())
-            .Build();
+            .WithEffect(new BeliefEffect(Facts.Effects.HasWood, () => true))
+            .BuildAction();
         return action;
     }
 }

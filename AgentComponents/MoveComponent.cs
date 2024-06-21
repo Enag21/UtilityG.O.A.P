@@ -13,11 +13,12 @@ public partial class MoveComponent : Node, INavigationComponent
     public event Action NavigationFinished;
 
     private Vector2 _destination = Vector2.Zero;
+    private float _range = 1.0f;
 
     public override void _Process(double delta)
     {
         if (_destination == Vector2.Zero) return;
-        if (Actor.Position.DistanceTo(_destination) < 1)
+        if (Actor.Position.DistanceTo(_destination) < _range)
         {
             _destination = Vector2.Zero;
             NavigationFinished?.Invoke();
@@ -27,5 +28,9 @@ public partial class MoveComponent : Node, INavigationComponent
         Actor.Position = Actor.Position.MoveToward(_destination, (float)(delta * MaxSpeed));
     }
 
-    public void SetDestination(Vector2 destination) => _destination = destination;
+    public void SetDestination(Vector2 destination, float range)
+    {
+        _destination = destination;
+        _range = range;
+    }
 }

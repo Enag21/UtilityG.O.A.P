@@ -18,11 +18,11 @@ public class PlanSimulator
     {
         foreach (var action in _plan.Actions)
         {
-            action.Effects.ApplyEffects(_simulatedState);
-            foreach (var modifier in action.ParameterModifiers)
+            action.ActionState.Effects.ForEach(effect => effect.ApplyEffect(_simulatedState));
+/*             foreach (var modifier in action.ParameterModifiers)
             {
                 _simulatedState.ParameterManager.UpdateParameter(modifier);
-            }
+            } */
         }
         return _simulatedState;
     }

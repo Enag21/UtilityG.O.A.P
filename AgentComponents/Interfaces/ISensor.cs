@@ -4,10 +4,10 @@ namespace UGOAP.AgentComponents.Interfaces;
 
 public interface ISensor
 {
-    void UpdateBeliefs(ISensable sensable);
+    void Update(ISensable sensable);
 }
 
-public interface ISensable : IBeliefState
+public interface ISensable
 {
 }
 

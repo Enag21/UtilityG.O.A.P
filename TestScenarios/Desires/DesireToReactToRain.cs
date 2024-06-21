@@ -2,6 +2,7 @@ using Godot;
 using UGOAP.BehaviourSystem.Desires;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.BehaviourSystem.Goals.SatisfactionConditions;
+using UGOAP.BehaviourSystem.Planners;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.Facts;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
@@ -22,24 +23,18 @@ public partial class DesireToReactToRain : Desire
         }
         if (Agent.State.TraitManager.GetTrait(TraitType.DislikesRain) != Trait.None)
         {
-            var trigger = new Belief.BeliefBuilder(new CommonUtils.FastName.FastName("IsRaining"))
-                .WithCondition(() => TriggerCondition()).Build();
             var goal = () => new Goal.Builder(new CommonUtils.FastName.FastName("ReactToRain"))
                 .WithPriority(20.0f)
                 .WithSatisfactionCondition(new IsCoveredCondition())
-                .WithDesiredEffect(new Belief.BeliefBuilder(Facts.Predicates.IsCovered).WithCondition(() => true).Build())
+                .WithDesiredEffect(new BeliefEffect(Facts.Predicates.IsCovered, () => true))
                 .Build();
-            var triggerMap = new TriggerGoalMap(trigger);
-            triggerMap.GoalCreators.Add(goal);
-            Triggers.Add(triggerMap);
+            var trigger = new Trigger.Builder()
+                .WithCondition(() => WeatherComponent.Instance.CurrentWeather == WeatherType.Rain)
+                .WithCondition(() => Agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsCovered).Evaluate() == false)
+                .WithGoalCreator(goal)
+                .Build();
+            Triggers.Add(trigger);
         }
-    }
-
-    private bool TriggerCondition()
-    {
-        var isRaining = WeatherComponent.Instance.CurrentWeather == WeatherType.Rain;
-        var isNotCovered = !Agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsCovered).Evaluate();
-        return isRaining && isNotCovered;
     }
 }
 

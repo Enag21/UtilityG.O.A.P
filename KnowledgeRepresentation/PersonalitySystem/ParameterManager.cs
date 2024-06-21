@@ -25,12 +25,12 @@ public partial class ParameterManager : Node, IParameterManager
     public IParameter GetParameter(ParameterType name) =>
         Parameters.GetValueOrDefault(name);
 
-    public void UpdateParameter(IParameterModifier modifier)
+    public void UpdateParameter(ParameterType parameter, float value)
     {
-        var parameterToUpdate = Parameters.GetValueOrDefault(modifier.ParameterType);
+        var parameterToUpdate = Parameters.GetValueOrDefault(parameter);
         if (parameterToUpdate == null)
             return;
-        modifier.Modify(parameterToUpdate);
+        parameterToUpdate.Value = Mathf.Clamp(parameterToUpdate.Value + value, 0.0f, 100.0f);
     }
 
     public IParameterManager Copy()

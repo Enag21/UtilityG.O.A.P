@@ -8,5 +8,5 @@ public interface IParameterManager : ICopyable<IParameterManager>
     IParameter GetParameter(ParameterType name);
     void AddParameter(IParameter parameter);
     void RemoveParameter(ParameterType name);
-    void UpdateParameter(IParameterModifier modifier);
+    void UpdateParameter(ParameterType parameter, float value);
 }

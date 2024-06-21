@@ -11,6 +11,8 @@ namespace UGOAP.TestScenarios.Scenes.SmartObjects.FirePit.Actions;
 public partial class LightFireActionLogic : Node, IActionLogic
 {
     public event Action LogicFinished;
+    public event Action LogicFailed;
+
     private FirePit _firePit;
     private IAgent _agent;
 

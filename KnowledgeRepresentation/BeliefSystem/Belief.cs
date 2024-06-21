@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Godot;
+using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 using UGOAP.SmartObjects;
 
@@ -7,12 +9,12 @@ namespace UGOAP.KnowledgeRepresentation.BeliefSystem;
 
 public class Belief : ICopyable<Belief>
 {
-    public CommonUtils.FastName.FastName Predicate { get; set; }
+    public FastName Predicate { get; set; }
+    public EntityFluent EntityFluent { get; set; } = null;
     private Func<bool> _condition = () => false;
     private Func<Vector2> _location = () => Vector2.Zero;
-    private Func<ISmartObject> _entity = () => null;
 
-    Belief(CommonUtils.FastName.FastName predicate) => Predicate = predicate;
+    Belief(FastName predicate) => Predicate = predicate;
 
     public bool Evaluate() => _condition();
 
@@ -21,7 +23,7 @@ public class Belief : ICopyable<Belief>
         return new BeliefBuilder(Predicate)
             .WithCondition(_condition.Clone() as Func<bool>)
             .WithLocation(_location.Clone() as Func<Vector2>)
-            .WithEntity(_entity)
+            .WithEntity(EntityFluent?.Copy())
             .Build();
     }
 
@@ -36,7 +38,7 @@ public class Belief : ICopyable<Belief>
     {
         readonly Belief _belief;
 
-        public BeliefBuilder(CommonUtils.FastName.FastName predicate) => _belief = new Belief(predicate);
+        public BeliefBuilder(FastName predicate) => _belief = new Belief(predicate);
 
         public BeliefBuilder WithCondition(Func<bool> condition)
         {
@@ -50,12 +52,49 @@ public class Belief : ICopyable<Belief>
             return this;
         }
 
-        public BeliefBuilder WithEntity(Func<ISmartObject> entity)
+        public BeliefBuilder WithEntity(EntityFluent entity)
         {
-            _belief._entity = entity;
+            _belief.EntityFluent = entity;
             return this;
         }
-
         public Belief Build() => _belief;
+    }
+}
+
+public record Entity(ISmartObject SmartObject, Func<float> Health = null);
+
+public interface IEntity
+{
+    FastName Id { get; }
+    Vector2 Location { get; }
+    Dictionary<FastName, float> Data { get; }
+}
+
+public class EntityFluent : ICopyable<EntityFluent>
+{
+    public IEntity Entity { get; set; } = null;
+    public Dictionary<FastName, float> Data { get; set; } = new();
+
+    EntityFluent(IEntity entity) => Entity = entity;
+
+    public class AboutEntity
+    {
+        private readonly EntityFluent _entity;
+
+        public AboutEntity(IEntity entity) => _entity = new EntityFluent(entity);
+
+        public AboutEntity WithHealth(float health)
+        {
+            _entity.Data[new FastName("Health")] = health;
+            return this;
+        }
+        public EntityFluent Create() => _entity;
+    }
+
+    public EntityFluent Copy()
+    {
+        var newdata = new Dictionary<FastName, float>(Data);
+        var fluent = new EntityFluent(Entity) { Data = newdata };
+        return fluent;
     }
 }

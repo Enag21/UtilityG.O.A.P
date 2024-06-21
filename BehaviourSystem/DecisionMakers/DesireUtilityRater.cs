@@ -12,9 +12,6 @@ public class DesireUtilityRater : IUtilityRater
 
     public float RateUtility(IState state)
     {
-        GD.Print("RateUtility");
-        GD.Print("Beliefs:");
-        state.BeliefComponent.PrintBeliefs();
         var valueSum = 0.0f;
         var weightSum = 0.0f;
         foreach (var desire in _desires)

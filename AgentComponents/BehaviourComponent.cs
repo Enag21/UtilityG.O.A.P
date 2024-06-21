@@ -31,7 +31,8 @@ public partial class BehaviourComponent : Node
     {
         _agent = GetOwner<IAgent>();
         PlanExecutionComponent.PlanFinished += () => _behaviourRunning = false;
-        _plannerComponent = new PlannerComponent(new AStarPlanner(new BeliefsHeuristic()));
+        //TODO: Fix cyclic dependency right now the DecisionComponent has to be higher in the scene tree to make sure it is ready first
+        _plannerComponent = new PlannerComponent(new UtilityPlanner(DecisionMakerComponent.UtilityRater, new BeliefsHeuristic()));
     }
 
     public override void _Process(double delta)

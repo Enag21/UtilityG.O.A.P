@@ -14,7 +14,7 @@ public class Goal
     public FastName Name { get; set; }
     public event Action GoalSatisfied;
     public float Priority { get; set; }
-    public Effects DesiredEffects { get; private set; } = new Effects();
+    public List<IEffect> DesiredEffects { get; private set; } = new List<IEffect>();
     private readonly List<ISatisfactionCondition> _satisfactionConditions = new List<ISatisfactionCondition>();
 
     private Goal(FastName name) => Name = name;
@@ -49,13 +49,13 @@ public class Goal
             return this;
         }
 
-        public Builder WithDesiredEffect(Belief effect)
+        public Builder WithDesiredEffect(IEffect effect)
         {
             _goal.DesiredEffects.Add(effect);
             return this;
         }
 
-        public Builder WithEffect(Belief effect)
+        public Builder WithEffect(IEffect effect)
         {
             _goal.DesiredEffects.Add(effect);
             return this;

@@ -10,6 +10,7 @@ atlas = ExtResource("2_gkw23")
 region = Rect2(65.5833, 49.4832, 13.6142, 11.9257)
 
 [node name="Chair" type="Area2D" groups=["SmartObject"]]
+collision_layer = 2
 script = ExtResource("1_bu4h6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

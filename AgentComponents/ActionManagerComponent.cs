@@ -27,10 +27,22 @@ public partial class ActionManagerComponent : Node, IActionManager
         SetUpActions();
     }
 
+    public void RegisterAction(IAction action)
+    {
+        AvailableActions.Add(action);
+        AddChild(action as Node);
+    }
+
+    public void RemoveAction(IAction action)
+    {
+        AvailableActions.Remove(action);
+        if (action is Node node) node.QueueFree();
+    }
+
     private void OnSmartObjectDeregistered(ISmartObject @object)
     {
         _registeredSmartObjects.Remove(@object);
-        var actions = AvailableActions.Where(a => a.Provider == @object);
+        var actions = AvailableActions.Where(a => a.ActionState.Provider == @object);
         RemoveLocationBelief(@object);
         foreach (var action in actions)
         {

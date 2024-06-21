@@ -6,5 +6,5 @@ namespace UGOAP.AgentComponents.Interfaces;
 public interface INavigationComponent
 {
     event Action NavigationFinished;
-    void SetDestination(Vector2 destination);
+    void SetDestination(Vector2 destination, float range);
 }

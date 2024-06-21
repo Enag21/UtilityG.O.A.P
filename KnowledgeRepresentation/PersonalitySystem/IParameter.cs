@@ -13,6 +13,5 @@ public enum ParameterType
 public interface IParameter : ICopyable<IParameter>
 {
     ParameterType Type { get; }
-    float Value { get; }
-    void Update(IUpdateStrategy updateStrategy);
+    float Value { get; set; }
 }

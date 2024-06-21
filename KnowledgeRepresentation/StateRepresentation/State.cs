@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UGOAP.AgentComponents;
+using UGOAP.BehaviourSystem.Planners;
 using UGOAP.CommonUtils.ExtensionMethods;
+using UGOAP.CommonUtils.FastName;
 using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 
@@ -37,12 +39,23 @@ public class State : IState
         ParameterManager = state.ParameterManager.Copy();
     }
 
-    public State(HashSet<Belief> stateEffects)
+    public State(List<IEffect> stateEffects)
     {
         BeliefComponent = new BeliefComponent();
         TraitManager = new TraitManager();
         ParameterManager = new ParameterManager();
-        stateEffects.ForEach(effect => BeliefComponent.AddBelief(effect));
+        foreach (var effect in stateEffects)
+        {
+            if (effect is BeliefEffect beliefEffect)
+            {
+                BeliefComponent.AddBelief(beliefEffect.Effect.Copy());
+            }
+            else if (effect is FluentEffect fluentEffect)
+            {
+                BeliefComponent.AddBelief(new Belief.BeliefBuilder(new FastName($"About {fluentEffect.EntityFluent.Entity.Id}"))
+                    .WithEntity(fluentEffect.EntityFluent).Build());
+            }
+        }
     }
 
     public IState Copy() => new State(this);
