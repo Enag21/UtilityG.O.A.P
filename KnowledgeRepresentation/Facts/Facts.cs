@@ -24,6 +24,7 @@ public record Facts
         public static readonly FastName IsInsideHouse = new FastName("IsInsideHouse");
         public static readonly FastName IsCovered = new FastName("IsCovered");
         public static readonly FastName IsHungry = new FastName("IsHungry");
+        public static readonly FastName NotHungry = new FastName("NotHungry");
         public static readonly FastName HasFood = new FastName("HasFood");
     }
 

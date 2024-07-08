@@ -40,6 +40,7 @@ _stateManager = NodePath("StateManager")
 _desireComponent = NodePath("DesireComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_hbo0f")
 
 [node name="StateManager" type="Node" parent="." node_paths=PackedStringArray("_beliefComponent", "_traitManager", "_parameterManager")]
@@ -101,4 +102,5 @@ texture = SubResource("AtlasTexture_3yifj")
 script = ExtResource("10_om37l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SenseComponent"]
+visible = false
 shape = SubResource("CircleShape2D_g7nej")

@@ -59,6 +59,7 @@ public partial class SmartWeapon : Area2D, ISmartObject
 
         var effect = new FluentEffect.Builder(new EntityFluent.AboutEntity(entity).Create())
             .WithHealthModifier(- Attack.Damage)
+            .WithConditionalEffect(Facts.Predicates.HasFood, () => true, (health) => health <= 0.0f)
             .Build();
         return effect;
     }

@@ -24,6 +24,8 @@ public class UtilityPlanner : BasePlanner
             return new Plan(new Queue<IAction>(), 0.0f);
         }
         InverseBeliefs(goalState);
+        goalState.BeliefComponent.AddRange(currentState.BeliefComponent.Beliefs);
+
 
         var openSet = new PriorityQueue<IPlanNode, float>();
         var closedSet = new HashSet<IPlanNode>();
@@ -45,6 +47,7 @@ public class UtilityPlanner : BasePlanner
             foreach (var action in availableActions)
             {
                 if (!PreconditionsMet(action, currentNode.State)) continue;
+
                 var newState = currentNode.State.Copy();
                 action.ActionState.Effects.ForEach(effect => effect.ApplyEffect(newState));
                 AddPreconditionsToState(newState, action);
@@ -52,7 +55,7 @@ public class UtilityPlanner : BasePlanner
                 var newNode = new StatePlanNode(currentNode, action, newState, currentNode.Cost + action.ActionState.Cost());
                 if (!closedSet.Contains(newNode))
                 {
-                    openSet.Enqueue(newNode, -goal.GetSatisfaction(newNode.State));
+                    openSet.Enqueue(newNode, -_utilityRater.RateUtility(newState));
                 }
             }
         }

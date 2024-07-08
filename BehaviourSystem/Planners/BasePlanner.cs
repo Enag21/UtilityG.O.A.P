@@ -16,7 +16,7 @@ public abstract class BasePlanner : IPlanner
         foreach (var precondition in action.ActionState.Preconditions)
         {
             var preconditionInversed = precondition.Copy().Invert();
-            state.BeliefComponent.AddBelief(preconditionInversed);
+            state.BeliefComponent.UpdateBelief(preconditionInversed);
         }
     }
 

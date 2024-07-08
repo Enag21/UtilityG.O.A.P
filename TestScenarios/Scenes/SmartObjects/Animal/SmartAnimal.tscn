@@ -19,6 +19,7 @@ collision_mask = 0
 script = ExtResource("1_65g66")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_pqill")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -13,5 +13,6 @@ script = ExtResource("1_cehob")
 [node name="House" parent="." instance=ExtResource("2_xad0y")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0.5, -33.5)
 shape = SubResource("RectangleShape2D_qobak")

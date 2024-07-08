@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.CommonUtils.FastName;
-using UGOAP.KnowledgeRepresentation.BeliefSystem;
 using UGOAP.KnowledgeRepresentation.PersonalitySystem;
 using UGOAP.KnowledgeRepresentation.StateRepresentation;
 

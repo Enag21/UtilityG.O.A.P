@@ -70,4 +70,5 @@ collision_mask = 2
 script = ExtResource("3_dw56m")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SensableComponent"]
+visible = false
 shape = SubResource("CircleShape2D_tmdfp")

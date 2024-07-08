@@ -10,6 +10,7 @@ public interface IBeliefComponent : ICopyable<IBeliefComponent>
 {
     Dictionary<FastName, Belief> Beliefs { get; }
     void AddBelief(Belief belief);
+    void AddRange(Dictionary<FastName, Belief> beliefs);
     void UpdateBelief(Belief belief);
     void RemoveBelief(FastName predicate);
     Belief GetBelief(FastName predicate);

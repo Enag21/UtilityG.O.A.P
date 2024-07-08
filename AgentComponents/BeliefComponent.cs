@@ -87,4 +87,13 @@ public partial class BeliefComponent : Node, IBeliefComponent
             GD.Print($"{predicate} = {belief.Evaluate()}");
         }
     }
+
+    public void AddRange(Dictionary<FastName, Belief> beliefs)
+    {
+        foreach (var (_, belief) in beliefs)
+        {
+            UpdateBelief(belief);
+        }
+    }
+
 }

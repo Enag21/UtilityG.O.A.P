@@ -1,5 +1,6 @@
 using System.Linq;
 using Godot;
+using UGOAP.Agent;
 using UGOAP.BehaviourSystem.Desires;
 using UGOAP.BehaviourSystem.Goals;
 using UGOAP.BehaviourSystem.Goals.SatisfactionConditions;
@@ -23,9 +24,11 @@ public partial class DesireToEat : Desire
 
     private Trigger HasFoodTrigger()
     {
-        var goal = () => new Goal.Builder(new FastName("Eat"))
+        var goal = () => new Goal.Builder(new FastName("ToEat"))
+            .WithDesiredEffect(new BeliefEffect(Facts.Predicates.NotHungry, () => true))
             .WithSatisfactionCondition(new NoHungryCondition())
             .Build();
+
         var trigger = new Trigger.Builder()
             .WithCondition(() => Agent.State.BeliefComponent.GetBelief(Facts.Predicates.IsHungry).Evaluate())
             .WithCondition(() => Agent.State.BeliefComponent.GetBelief(Facts.Predicates.HasFood).Evaluate())
@@ -80,10 +83,11 @@ public class NoHungryCondition : ISatisfactionCondition
 {
     public float GetSatisfaction(IState state)
     {
-        if (state.BeliefComponent.GetBelief(Facts.Predicates.IsHungry).Evaluate())
+        var notHungry = state.BeliefComponent.GetBelief(Facts.Predicates.NotHungry).Evaluate();
+        if (notHungry)
         {
-            return 0.0f;
+            return 1.0f;
         }
-        return 1.0f;
+        return 0.0f;
     }
 }

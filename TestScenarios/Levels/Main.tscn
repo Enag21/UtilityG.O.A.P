@@ -52,9 +52,8 @@ position = Vector2(256, 203)
 [node name="Tree3" parent="SmartObjects" instance=ExtResource("3_o2edj")]
 position = Vector2(422, 239)
 
-[node name="FirePit" parent="SmartObjects" node_paths=PackedStringArray("SensableComponent") instance=ExtResource("4_m1rol")]
+[node name="FirePit" parent="SmartObjects" instance=ExtResource("4_m1rol")]
 position = Vector2(372, 190)
-SensableComponent = NodePath("SensableComponent")
 
 [node name="Chair" parent="SmartObjects" instance=ExtResource("6_687iv")]
 position = Vector2(404, 162)
@@ -68,9 +67,5 @@ position = Vector2(52, 45)
 [node name="SmartAnimal" parent="SmartObjects" instance=ExtResource("9_mophx")]
 position = Vector2(321, 244)
 
-[node name="BasicNpc2" parent="." node_paths=PackedStringArray("MoveComponent", "BehaviourComponent", "_stateManager", "_desireComponent") instance=ExtResource("11_j6r3k")]
+[node name="DumpNpc" parent="." instance=ExtResource("11_j6r3k")]
 position = Vector2(119, 240)
-MoveComponent = NodePath("MoveComponent")
-BehaviourComponent = NodePath("BehaviourComponent")
-_stateManager = NodePath("StateManager")
-_desireComponent = NodePath("DesireComponent")

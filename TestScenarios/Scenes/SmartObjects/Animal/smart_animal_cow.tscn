@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0aebddyope6v"]
+
+[ext_resource type="PackedScene" uid="uid://ds2mi8mfrl0rh" path="res://TestScenarios/Scenes/SmartObjects/Animal/SmartAnimal.tscn" id="1_0huf1"]
+[ext_resource type="Texture2D" uid="uid://dvyoiiwho6x25" path="res://TestScenarios/Art/Animals/Cow/Free Cow Sprites.png" id="2_xei5k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fv1me"]
+atlas = ExtResource("2_xei5k")
+region = Rect2(2.41808, 10.584, 28.9954, 19.7551)
+
+[node name="SmartAnimalCow" instance=ExtResource("1_0huf1")]
+
+[node name="CollisionShape2D" parent="." index="0"]
+visible = false
+
+[node name="Sprite2D" parent="." index="1"]
+visible = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="." index="4"]
+texture = SubResource("AtlasTexture_fv1me")

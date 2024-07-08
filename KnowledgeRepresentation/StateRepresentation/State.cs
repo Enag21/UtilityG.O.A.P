@@ -57,6 +57,6 @@ public class State : IState
             }
         }
     }
-
+    
     public IState Copy() => new State(this);
 }

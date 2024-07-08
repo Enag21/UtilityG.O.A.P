@@ -88,6 +88,13 @@ public class EntityFluent : ICopyable<EntityFluent>
             _entity.Data[new FastName("Health")] = health;
             return this;
         }
+
+        public AboutEntity WithHunger(float hunger)
+        {
+            _entity.Data[new FastName("Hunger")] = hunger;
+            return this;
+        }
+
         public EntityFluent Create() => _entity;
     }
 
