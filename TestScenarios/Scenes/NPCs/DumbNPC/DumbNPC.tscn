@@ -1,9 +1,8 @@
-[gd_scene load_steps=25 format=3 uid="uid://b8t4deri5kkv2"]
+[gd_scene load_steps=23 format=3 uid="uid://b8t4deri5kkv2"]
 
 [ext_resource type="Script" path="res://Agent/BaseAgent2D.cs" id="1_cflcl"]
 [ext_resource type="Script" path="res://Agent/StateManager.cs" id="2_xnctt"]
 [ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/TraitManager.cs" id="3_qbb4s"]
-[ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/Trait.cs" id="4_u7r1d"]
 [ext_resource type="Script" path="res://AgentComponents/BeliefComponent.cs" id="5_r55rf"]
 [ext_resource type="Script" path="res://KnowledgeRepresentation/PersonalitySystem/ParameterManager.cs" id="6_e8lom"]
 [ext_resource type="Script" path="res://AgentComponents/MoveComponent.cs" id="7_li8ll"]
@@ -21,11 +20,6 @@
 [ext_resource type="Script" path="res://AgentComponents/Sensors/TargetSenseComponent.cs" id="19_yjd3v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hbo0f"]
-
-[sub_resource type="Resource" id="Resource_1l6ay"]
-script = ExtResource("4_u7r1d")
-Type = 1
-Value = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3yifj"]
 atlas = ExtResource("16_6qhwk")
@@ -59,7 +53,7 @@ _parameterManager = NodePath("ParameterManager")
 
 [node name="TraitManager" type="Node" parent="StateManager"]
 script = ExtResource("3_qbb4s")
-Traits = Array[Object]([SubResource("Resource_1l6ay")])
+Traits = Array[Object]([])
 
 [node name="BeliefComponent" type="Node" parent="StateManager"]
 script = ExtResource("5_r55rf")

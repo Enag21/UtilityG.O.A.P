@@ -46,6 +46,7 @@ public partial class SmartWeapon : Area2D, ISmartObject
     public void OnTargetDied(IDamagable target)
     {
         ActionManager.RemoveAction(_targets[target]);
+        Agent.State.BeliefComponent.RemoveBeliefAboutEntity(target as IEntity);
         _targets.Remove(target);
     }
 

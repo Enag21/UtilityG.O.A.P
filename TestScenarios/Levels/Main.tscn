@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://d1pt4qdm72lrq"]
+[gd_scene load_steps=12 format=4 uid="uid://d1pt4qdm72lrq"]
 
 [ext_resource type="PackedScene" uid="uid://hxqcs7d0ykv4" path="res://TestScenarios/Art/VFX/Rain/Rain.tscn" id="1_3c8jw"]
 [ext_resource type="PackedScene" uid="uid://dn8gi1moa7qwr" path="res://TestScenarios/Tilemaps/Grass.tscn" id="1_6vktw"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b38461qtxj7kf" path="res://TestScenarios/Scenes/SmartObjects/Chair/Chair.tscn" id="6_687iv"]
 [ext_resource type="PackedScene" uid="uid://ixn3s580l18w" path="res://TestScenarios/Scenes/SmartObjects/House/SmartHouse.tscn" id="9_mh063"]
 [ext_resource type="PackedScene" uid="uid://ds2mi8mfrl0rh" path="res://TestScenarios/Scenes/SmartObjects/Animal/SmartAnimal.tscn" id="9_mophx"]
+[ext_resource type="PackedScene" uid="uid://b0aebddyope6v" path="res://TestScenarios/Scenes/SmartObjects/Animal/smart_animal_cow.tscn" id="10_q0nbc"]
 [ext_resource type="PackedScene" uid="uid://b8t4deri5kkv2" path="res://TestScenarios/Scenes/NPCs/DumbNPC/DumbNPC.tscn" id="11_j6r3k"]
 
 [node name="Main" type="Node2D"]
@@ -56,7 +57,7 @@ position = Vector2(422, 239)
 position = Vector2(372, 190)
 
 [node name="Chair" parent="SmartObjects" instance=ExtResource("6_687iv")]
-position = Vector2(404, 162)
+position = Vector2(289, 117)
 
 [node name="Chair2" parent="SmartObjects" instance=ExtResource("6_687iv")]
 position = Vector2(541, 215)
@@ -67,5 +68,14 @@ position = Vector2(52, 45)
 [node name="SmartAnimal" parent="SmartObjects" instance=ExtResource("9_mophx")]
 position = Vector2(321, 244)
 
+[node name="SmartAnimal2" parent="SmartObjects" instance=ExtResource("9_mophx")]
+position = Vector2(356, 70)
+
+[node name="SmartAnimal3" parent="SmartObjects" instance=ExtResource("9_mophx")]
+position = Vector2(485, 61)
+
+[node name="SmartAnimalCow" parent="SmartObjects" instance=ExtResource("10_q0nbc")]
+position = Vector2(555, 103)
+
 [node name="DumpNpc" parent="." instance=ExtResource("11_j6r3k")]
-position = Vector2(119, 240)
+position = Vector2(549, 159)

@@ -46,7 +46,7 @@ public class UtilityPlanner : BasePlanner
             var availableActions = new HashSet<IAction>(actions).OrderBy(a => a.ActionState.Cost());
             foreach (var action in availableActions)
             {
-                if (!PreconditionsMet(action, currentNode.State)) continue;
+                if (!action.ActionState.Effects.Any(e => e.FulfillsAnyRequiredEffects(currentNode.State))) continue;
 
                 var newState = currentNode.State.Copy();
                 action.ActionState.Effects.ForEach(effect => effect.ApplyEffect(newState));

@@ -68,6 +68,7 @@ public partial class BaseAgent2D : CharacterBody2D, IAgent, IEntity
         var eatAction = new ActionBuilder<BasicAction>(new FastName("Eat"), new EatActionLogic(this), this, this)
             .WithPrecondition(new Belief.BeliefBuilder(Facts.Predicates.HasFood).WithCondition(() => true).Build())
             .WithEffect(EatEffect())
+            .WithEffect(new BeliefEffect(Facts.Predicates.HasFood, () => false))
             .BuildAction();
 
         _actionManager.RegisterAction(eatAction);

@@ -96,4 +96,12 @@ public partial class BeliefComponent : Node, IBeliefComponent
         }
     }
 
+    public void RemoveBeliefAboutEntity(IEntity entity)
+    {
+        var entityBelief = GetBeliefAboutEntity(entity);
+        if (entityBelief != null)
+        {
+            RemoveBelief(entityBelief.Predicate);
+        }
+    }
 }

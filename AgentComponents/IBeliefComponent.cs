@@ -17,4 +17,6 @@ public interface IBeliefComponent : ICopyable<IBeliefComponent>
     Belief GetBeliefAboutEntity(IEntity entity);
     List<Belief> GetSpecificEntityBeliefs<T>() where T : class;
     void PrintBeliefs();
+    void RemoveBeliefAboutEntity(IEntity entity);
+
 }

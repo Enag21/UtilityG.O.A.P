@@ -16,12 +16,12 @@ public partial class DesireToReactToRain : Desire
 {
     protected override void ConfigureTriggers()
     {
-        if (Agent.State.TraitManager.GetTrait(TraitType.LikesRain) != Trait.None)
+        if (Agent.State.TraitManager.GetTrait(TraitType.LikesRain) != new NoneTrait())
         {
             // noop
             // TODO: Do something differnet if the agent likes the rain
         }
-        if (Agent.State.TraitManager.GetTrait(TraitType.DislikesRain) != Trait.None)
+        if (Agent.State.TraitManager.GetTrait(TraitType.DislikesRain) != new NoneTrait())
         {
             var goal = () => new Goal.Builder(new CommonUtils.FastName.FastName("ReactToRain"))
                 .WithPriority(20.0f)
